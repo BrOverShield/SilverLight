@@ -12,8 +12,9 @@ public class TileInfo
     public GameObject myGo;
     public TileInfo(int x, int y,Color P,int etage)
     {
-        type = (int)P.r;
-        Lumiere = (int)P.g;
+        
+        type = (int)(P.r*255);
+        Lumiere = (int)(P.g*255);
         Etage = etage;
         PositionX = x;
         PositionY = y;

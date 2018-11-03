@@ -24,7 +24,7 @@ public class Generator : MonoBehaviour
                 TileInfo TI = new TileInfo(x,y,P,0);//Tile info
                 GameObject TIGO = Instantiate(TilePrefab, new Vector3(x, 0, y), Quaternion.identity,MapHolder);//Tile PRefab
                 Mapping(TIGO, TI);//Mapping des deux dans mes dictionaires
-                //UpdateGo(TI);//Update le tile prefab attribue le ti au go et le go au ti
+                UpdateGo(TI);//Update le tile prefab attribue le ti au go et le go au ti
             }
         }
     }
