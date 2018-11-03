@@ -10,6 +10,7 @@ ModelImporter:
     100008: Window
     100010: Tree
     100012: Cube
+    100014: Cube_001
     400000: Corner
     400002: Pillar
     400004: //RootNode
@@ -17,30 +18,35 @@ ModelImporter:
     400008: Window
     400010: Tree
     400012: Cube
+    400014: Cube_001
     2100000: None__Window
     2100002: None__Pillar_001
     2100004: None__Corner
     2100006: None__Wall
     2100008: None__Tree
     2100010: None__Regular_Wall
+    2100012: unnamed
     2300000: Corner
     2300002: Pillar
     2300004: Wall
     2300006: Window
     2300008: Tree
     2300010: Cube
+    2300012: Cube_001
     3300000: Corner
     3300002: Pillar
     3300004: Wall
     3300006: Window
     3300008: Tree
     3300010: Cube
+    3300012: Cube_001
     4300000: Window
     4300002: Pillar
     4300004: Corner
     4300006: Wall
     4300008: Tree
     4300010: Cube
+    4300012: Cube_001
     7400000: Default Take
     9500000: //RootNode
     2186277476908879412: ImportLogs
