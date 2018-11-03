@@ -10,10 +10,11 @@ public class TileUpdater : MonoBehaviour
     TileInfo myInfo;
     public Material[] mats =new Material[7];
     PlayerController player;
-    
+    public bool StartLocation = false;
     void Start()
     {
-       
+        player = FindObjectOfType<PlayerController>();
+        
     }
 
 
@@ -21,12 +22,18 @@ public class TileUpdater : MonoBehaviour
     {
 
     }
-    public void OnMouseDown()
+    private void OnMouseOver()
     {
-        player.TileClicked = this.gameObject;
-        player.tiClicked = myInfo;
-        player.PathFinding();
+        if(Input.GetMouseButtonDown(0))
+        {
+            print("TileClickedis" + myInfo.PositionX+","+ myInfo.PositionY);
+            player.TileClicked = this.gameObject;
+            player.tiClicked = myInfo;
+            player.MoveMan();
+            //player.PathFinding();
+        }
     }
+    
 
     public void UpdateMe(TileInfo ti)
     {
@@ -62,6 +69,13 @@ public class TileUpdater : MonoBehaviour
         if (ti.type == 220)
         {
             GetComponentInChildren<MeshRenderer>().material = mats[6];
+        }
+        if (StartLocation)
+        {
+            player = FindObjectOfType<PlayerController>();
+           
+            player.myPresentTileInfo = ti;
+           
         }
     }
 
