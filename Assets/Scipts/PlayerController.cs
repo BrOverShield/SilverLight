@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public TileInfo myPresentTileInfo;
 
     public int Porte = 5;
-    public bool isTurn=true;
+    
 
 	void Start ()
     {
@@ -24,28 +24,49 @@ public class PlayerController : MonoBehaviour
         GM = FindObjectOfType<Generator>();
         
     }
-	
-	
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.GetComponent<TileInfo>()!=null)
+        {
+            if (Blocking(other.gameObject.GetComponent<TileInfo>().type))
+            {
+                isMoving = false;
+            }
+        }
+    }
+    bool isMoving = false;
+    float T=0;
 	void Update ()
     {
-        
-		
-	}
+        if(isMoving)
+        {
+            this.transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(tiClicked.PositionX, 0.5f, tiClicked.PositionY), 0.2f);
+            T += Time.deltaTime;
+            
+        }
+        if(T>5)
+        {
+            
+            isMoving = false;
+            
+        }
+
+    }
     public void MoveMan()
     {
-        if (isTurn)
+        if (GM.IsPlayerTurn)
         {
 
             if (TileClicked != null)
             {
                 if (FindIfLegal(tiClicked))
                 {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        this.transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(tiClicked.PositionX, 0.5f, tiClicked.PositionY), 1f);
-                    }
+                    T = 0;
+                    isMoving = true;
                     myPresentTileInfo = tiClicked;
                     TileClicked = null;
+                    GM.IsPlayerTurn = false;
+                    GM.ResetEnemyTurn();
                 }
             }
         }
@@ -56,6 +77,17 @@ public class PlayerController : MonoBehaviour
          {
              return false;
          }*/
+         if(Vector2.Distance(new Vector2(this.transform.position.x,this.transform.position.z),new Vector2(ti.PositionX,ti.PositionY))>5)
+         {
+            return false;
+         }
+        if (Vector2.Distance(new Vector2(this.transform.position.x, this.transform.position.z), new Vector2(ti.PositionX, ti.PositionY)) < 5)
+        {
+            if (Blocking(ti.type)==false)
+            {
+                return true;
+            }
+        }
         if (BlockingWay2(ti))
         {
             return false;

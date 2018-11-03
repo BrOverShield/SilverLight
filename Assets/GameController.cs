@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    bool IsPlayerTurn = true;
+    
 	
 	void Start ()
     {
