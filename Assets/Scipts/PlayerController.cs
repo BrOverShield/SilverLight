@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
                 {
                     for (int i = 0; i < 5; i++)
                     {
-                        this.transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(tiClicked.PositionX, 0.5f, tiClicked.PositionY), 0.2f);
+                        this.transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(tiClicked.PositionX, 0.5f, tiClicked.PositionY), 1f);
                     }
                     myPresentTileInfo = tiClicked;
                     TileClicked = null;
