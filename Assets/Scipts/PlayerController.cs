@@ -2,15 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		
+    //controle du joueur
+    //on clic sur une thuile et tu fait un pathfinding pour t<y rendre
+    Generator GM;
+	void Start ()
+    {
+        GM = FindObjectOfType<Generator>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	
+	void Update ()
+    {
 		
 	}
+    void SelectTile()
+    {
+
+    }
+    void MoveHere(GameObject tile)//Go ou Tile info?
+    {
+        
+    }
+    
 }
