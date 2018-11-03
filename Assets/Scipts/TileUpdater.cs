@@ -29,10 +29,11 @@ public class TileUpdater : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
+                
                 print("TileClickedis" + myInfo.PositionX + "," + myInfo.PositionY);
                 player.TileClicked = this.gameObject;
                 player.tiClicked = myInfo;
-                player.MoveMan();
+                //player.MoveMan();
                 //player.PathFinding();
             }
         }
