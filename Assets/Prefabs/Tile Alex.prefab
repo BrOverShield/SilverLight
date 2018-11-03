@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4621666749339112}
+  - component: {fileID: 114865644675389732}
   m_Layer: 0
   m_Name: Tile Alex
   m_TagString: Untagged
@@ -112,3 +113,23 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1107916002977708}
   m_Mesh: {fileID: 4300002, guid: 733a7663ab861ae4e8725ad3b89653c4, type: 3}
+--- !u!114 &114865644675389732
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1040582979765420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b1914104bb7fd4dbbfc9ac58e7bb9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mats:
+  - {fileID: 2100000, guid: 1c667f08062292249a851aa3a5e045c9, type: 2}
+  - {fileID: 2100000, guid: 80efbf90914295e44bfbf23c6a4ea5f2, type: 2}
+  - {fileID: 2100000, guid: e9983a874ff318a45b5bf75de94747c5, type: 2}
+  - {fileID: 2100000, guid: cbc1dc3dbad3f914ba22a840d5ac7aa5, type: 2}
+  - {fileID: 2100000, guid: 85f29f6ac6dd362488f3382ec65ce7bd, type: 2}
+  - {fileID: 2100000, guid: f36105bc3a1b9a642814efe2d1551762, type: 2}
+  - {fileID: 2100000, guid: c8104d5fa1648ad4c8768eb8ed7ae4cf, type: 2}
+  StartLocation: 0
