@@ -24,7 +24,133 @@ public class PlayerController : MonoBehaviour
         GM = FindObjectOfType<Generator>();
         
     }
-    private void OnTriggerEnter(Collider other)
+    //Actions
+    //Model De Transitions
+    //Result
+    private void Update()
+    {
+
+        Moving();
+    }
+    void Moving()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            MoveLeft();
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            MoveRight();
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Moveup();
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Movedown();
+        }
+        
+    }
+
+    void MoveLeft()
+    {
+        if(GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY))==false)
+        {
+            return;
+        }
+        if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)].type))
+        {
+            return;
+        }
+        Vector3 Myposition = this.transform.position;
+        Vector3 Destination = this.transform.position + new Vector3(-1, 0, 0);
+        for (int i = 0; i < 5; i++)
+        {
+            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
+
+        }
+        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)];
+        GM.IsPlayerTurn = false;
+
+    }
+    void MoveRight()
+    {
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)) == false)
+        {
+            return;
+        }
+        if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)].type))
+        {
+            return;
+        }
+
+        Vector3 Myposition = this.transform.position;
+        Vector3 Destination = this.transform.position + new Vector3(+1, 0, 0);
+        for (int i = 0; i < 5; i++)
+        {
+            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
+        }
+        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)];
+        GM.IsPlayerTurn = false;
+    }
+    void Moveup()
+    {
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY+1)) == false)
+        {
+            return;
+        }
+        if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY+1)].type))
+        {
+            return;
+        }
+        Vector3 Myposition = this.transform.position;
+        Vector3 Destination = this.transform.position + new Vector3(0, 0, 1);
+        for (int i = 0; i < 5; i++)
+        {
+            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
+        }
+        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY + 1)];
+        GM.IsPlayerTurn = false;
+    }
+    void Movedown()
+    {
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY-1)) == false)
+        {
+            return;
+        }
+        if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY-1)].type))
+        {
+            return;
+        }
+        Vector3 Myposition = this.transform.position;
+        Vector3 Destination = this.transform.position + new Vector3(0, 0, -1);
+        for (int i = 0; i < 5; i++)
+        {
+            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
+        }
+        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY - 1)];
+        GM.IsPlayerTurn = false;
+    }
+
+
+
+    bool Blocking(int type)
+    {
+        if (type == 100 || type == 120 || type == 110 || type == 200)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+
+
+    /*private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.GetComponent<TileInfo>()!=null)
         {
@@ -76,7 +202,7 @@ public class PlayerController : MonoBehaviour
         /* if(DetectBlockingWay(myPresentTileInfo,ti))
          {
              return false;
-         }*/
+         }
          if(Vector2.Distance(new Vector2(this.transform.position.x,this.transform.position.z),new Vector2(ti.PositionX,ti.PositionY))>5)
          {
             return false;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class Generator : MonoBehaviour
 {
     public bool IsPlayerTurn = true;
@@ -35,10 +35,19 @@ public class Generator : MonoBehaviour
                 UpdateGo(TI);
             }
         }
+        //killallChildren();
+    }
+    void killallChildren()
+    {
+       TileUpdater[] Children=FindObjectsOfType<TileUpdater>();
+        foreach (TileUpdater child in Children)
+        {
+            Destroy(child);
+        }
     }
     void StartLocation(int x,int y,TileInfo ti)
     {
-        if(x==2&&y==2)
+        if(x==18&&y==37)
         {
             mapTItoGO[ti].GetComponent<TileUpdater>().StartLocation = true; 
         }
