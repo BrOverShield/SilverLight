@@ -217,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPlayerTurn: 1
   Map2D1: {fileID: 2800000, guid: c5ec3f362d5279942bb876b0662418f4, type: 3}
-  TilePrefab: {fileID: 1270253739733536, guid: 9e2243d542131de4dac71801cca64c3e, type: 2}
+  TilePrefab: {fileID: 1040582979765420, guid: 491faff2b04d33e4d8a22fdfc880d8c3, type: 2}
   MapHolder: {fileID: 791994087}
 --- !u!4 &679261785
 Transform:
