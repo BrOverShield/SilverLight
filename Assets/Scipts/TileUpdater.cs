@@ -9,6 +9,7 @@ public class TileUpdater : MonoBehaviour
 {
     TileInfo myInfo;
     public Material[] mats =new Material[7];
+    PlayerController player;
     
     void Start()
     {
@@ -20,6 +21,13 @@ public class TileUpdater : MonoBehaviour
     {
 
     }
+    public void OnMouseDown()
+    {
+        player.TileClicked = this.gameObject;
+        player.tiClicked = myInfo;
+        player.PathFinding();
+    }
+
     public void UpdateMe(TileInfo ti)
     {
         this.transform.position = new Vector3(ti.PositionX, 0, ti.PositionY);
