@@ -4,45 +4,65 @@ using UnityEngine;
 
 public class DetectionEnemy : MonoBehaviour
 {
+    Generator GM;
     public PlayerController Player;
     GameObject PlayerGo;
-    bool Triggerd=false;
-    private void OnTriggerEnter(Collider other)    
-    {
-        if(other.gameObject==PlayerGo)
-        {
-
-            Triggerd = true;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == PlayerGo)
-        {
-
-            Triggerd = false;
-        }
-    }
-    void MoveToward()
-    {
-
-        Transform target = PlayerGo.transform;
-        Vector3 MyPosition = this.transform.parent.transform.position;
-        Vector3.MoveTowards(MyPosition, target.position, 0.2f);
-    }
+    public bool Triggerd=false;
+    
+   
+    
     void Start ()
     {
+        GM = FindObjectOfType<Generator>();
         Player = FindObjectOfType<PlayerController>();
         PlayerGo = Player.gameObject;
 	}
-	
-	
-	void Update ()
+
+    bool isMoving = false;
+    bool isAttacking = false;
+    public float T = 0;
+    void Update ()
     {
-        
-		if(Triggerd)
+        if(Vector3.Distance(this.transform.position,PlayerGo.transform.position)<=6)
         {
-            MoveToward();
+            Triggerd = true;
+            isMoving = true;
         }
+        else
+        {
+            Triggerd = false;
+        }
+        if (Vector3.Distance(this.transform.position, PlayerGo.transform.position) <= 1)
+        {
+            
+            isMoving = false;
+            isAttacking = true;
+        }
+        
+        if(GM.IsPlayerTurn==false)
+        {
+            T += Time.deltaTime;
+            if (Triggerd)
+            {
+                if (isMoving)
+                {
+                    this.transform.position = Vector3.MoveTowards(this.transform.position, PlayerGo.transform.position,0.1f);
+                    
+                }
+                
+
+            }
+            if (T > 2)
+            {
+                isMoving = false;
+                GM.IsPlayerTurn = true;
+            }
+
+        }
+        else
+        {
+            
+        }
+		
 	}
 }
