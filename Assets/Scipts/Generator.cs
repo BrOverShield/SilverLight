@@ -12,6 +12,7 @@ public class Generator : MonoBehaviour
     public Transform MapHolder;
     Dictionary<TileInfo, GameObject> mapTItoGO = new Dictionary<TileInfo, GameObject>();//map les info vers le visuel de la thuil
     Dictionary<GameObject, TileInfo> mapGOtoTI = new Dictionary<GameObject, TileInfo>();//map le visuel vers les info
+    public Dictionary<int[], TileInfo> mapCootoTI = new Dictionary<int[], TileInfo>();//map les coo vers les tileinfo
     List<TileInfo> mapinfo = new List<TileInfo>();//Contiens toutes les info de la map
     void GenerateMap1()
     {
@@ -23,17 +24,22 @@ public class Generator : MonoBehaviour
                 Color P = Map2D1.GetPixel(x, y);
                 TileInfo TI = new TileInfo(x,y,P,0);//Tile info
                 GameObject TIGO = Instantiate(TilePrefab, new Vector3(x, 0, y), Quaternion.identity,MapHolder);//Tile PRefab
-                Mapping(TIGO, TI);//Mapping des deux dans mes dictionaires
+                Mapping(TIGO, TI,x,y);//Mapping des deux dans mes dictionaires
+
                 UpdateGo(TI);//Update le tile prefab attribue le ti au go et le go au ti
             }
         }
     }
 
-    void Mapping(GameObject go, TileInfo ti)
+    void Mapping(GameObject go, TileInfo ti,int x,int y)
     {
         mapGOtoTI.Add(go, ti);
         mapTItoGO.Add(ti, go);
         mapinfo.Add(ti);
+        int[] coo = new int[2];
+        coo[0] = x;
+        coo[1] = y;
+        mapCootoTI.Add(coo, ti);
 
     }
     void UpdateGo(TileInfo ti)
