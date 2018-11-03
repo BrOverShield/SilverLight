@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[ExecuteInEditMode]
 public class Generator : MonoBehaviour
 {
     public bool IsPlayerTurn = true;
@@ -15,6 +15,8 @@ public class Generator : MonoBehaviour
     public Dictionary<GameObject, TileInfo> mapGOtoTI = new Dictionary<GameObject, TileInfo>();//map le visuel vers les info
     public Dictionary<string, TileInfo> mapCootoTI = new Dictionary<string, TileInfo>();//map les coo vers les tileinfo
     public List<TileInfo> mapinfo = new List<TileInfo>();//Contiens toutes les info de la map
+
+   
     void GenerateMap1()
     {
         MapWidth = Map2D1.width;

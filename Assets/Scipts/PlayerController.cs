@@ -24,7 +24,16 @@ public class PlayerController : MonoBehaviour
         GM = FindObjectOfType<Generator>();
         
     }
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.GetComponent<TileInfo>()!=null)
+        {
+            if (Blocking(other.gameObject.GetComponent<TileInfo>().type))
+            {
+                isMoving = false;
+            }
+        }
+    }
     bool isMoving = false;
     float T=0;
 	void Update ()
@@ -74,7 +83,7 @@ public class PlayerController : MonoBehaviour
          }
         if (Vector2.Distance(new Vector2(this.transform.position.x, this.transform.position.z), new Vector2(ti.PositionX, ti.PositionY)) < 5)
         {
-            if (BlockingWay2(ti)==false)
+            if (Blocking(ti.type)==false)
             {
                 return true;
             }
