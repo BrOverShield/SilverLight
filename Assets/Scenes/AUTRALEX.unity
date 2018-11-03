@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPlayerTurn: 1
-  Map2D1: {fileID: 2800000, guid: 388a41ffb14320d4aa0472d00f551538, type: 3}
+  Map2D1: {fileID: 2800000, guid: addc20d72c3a3fe4fba5f17922b8cf4c, type: 3}
   TilePrefab: {fileID: 1270253739733536, guid: 9e2243d542131de4dac71801cca64c3e, type: 2}
   MapHolder: {fileID: 1478812309}
 --- !u!4 &1303987843
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 765849c93d46f4345b3e0269aaed918d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Map2D1: {fileID: 2800000, guid: c5ec3f362d5279942bb876b0662418f4, type: 3}
+  Map2D1: {fileID: 2800000, guid: 388a41ffb14320d4aa0472d00f551538, type: 3}
   TilePrefab: {fileID: 1270253739733536, guid: 9e2243d542131de4dac71801cca64c3e, type: 2}
   BLCornerPrefab: {fileID: 1689280204814474, guid: c25c67619d73a0145a06b41b91a963e9,
     type: 2}
