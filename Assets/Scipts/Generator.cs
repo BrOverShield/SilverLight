@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Generator : MonoBehaviour
 {
+    public bool IsPlayerTurn = true;
     int MapWidth;
     int MapHeight;
     public Texture2D Map2D1;
@@ -61,6 +62,15 @@ public class Generator : MonoBehaviour
     private void Start()
     {
         GenerateMap1();
+    }
+
+    public void ResetEnemyTurn()
+    {
+        DetectionEnemy[] Enemies= FindObjectsOfType<DetectionEnemy>();
+        foreach (DetectionEnemy  E in Enemies)
+        {
+            E.T = 0;
+        }
     }
 
 }
