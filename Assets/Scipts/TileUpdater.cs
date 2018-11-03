@@ -11,10 +11,11 @@ public class TileUpdater : MonoBehaviour
     public Material[] mats =new Material[7];
     PlayerController player;
     public bool StartLocation = false;
+    Generator GM;
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
-        
+        GM = FindObjectOfType<Generator>();
     }
 
 
@@ -24,14 +25,18 @@ public class TileUpdater : MonoBehaviour
     }
     private void OnMouseOver()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(GM.IsPlayerTurn)
         {
-            print("TileClickedis" + myInfo.PositionX+","+ myInfo.PositionY);
-            player.TileClicked = this.gameObject;
-            player.tiClicked = myInfo;
-            player.MoveMan();
-            //player.PathFinding();
+            if (Input.GetMouseButtonDown(0))
+            {
+                print("TileClickedis" + myInfo.PositionX + "," + myInfo.PositionY);
+                player.TileClicked = this.gameObject;
+                player.tiClicked = myInfo;
+                player.MoveMan();
+                //player.PathFinding();
+            }
         }
+        
     }
     
 
