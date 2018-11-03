@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Generator : MonoBehaviour
 {
-    int MapWidth = 25;
-    int MapHeight = 25;
+    int MapWidth = 27;
+    int MapHeight = 28;
     public Texture2D Map2D1;
     public GameObject TilePrefab;//Le prefab des thuiles generes
     public Transform MapHolder;
