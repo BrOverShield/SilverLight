@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     Generator GM;
     public GameObject TileClicked;
     public TileInfo tiClicked;
-
+    TileInfo LastTile;
     //GameObject myPresentTile;
     public TileInfo myPresentTileInfo;
 
@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     }
     void Moving()
     {
+        
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             MoveLeft();
@@ -65,11 +66,12 @@ public class PlayerController : MonoBehaviour
         }
         Vector3 Myposition = this.transform.position;
         Vector3 Destination = this.transform.position + new Vector3(-1, 0, 0);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
+            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
 
         }
+        LastTile = myPresentTileInfo;
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)];
         GM.IsPlayerTurn = false;
 
@@ -87,10 +89,11 @@ public class PlayerController : MonoBehaviour
 
         Vector3 Myposition = this.transform.position;
         Vector3 Destination = this.transform.position + new Vector3(+1, 0, 0);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
+            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
         }
+        LastTile = myPresentTileInfo;
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)];
         GM.IsPlayerTurn = false;
     }
@@ -106,10 +109,11 @@ public class PlayerController : MonoBehaviour
         }
         Vector3 Myposition = this.transform.position;
         Vector3 Destination = this.transform.position + new Vector3(0, 0, 1);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
+            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
         }
+        LastTile = myPresentTileInfo;
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY + 1)];
         GM.IsPlayerTurn = false;
     }
@@ -125,10 +129,11 @@ public class PlayerController : MonoBehaviour
         }
         Vector3 Myposition = this.transform.position;
         Vector3 Destination = this.transform.position + new Vector3(0, 0, -1);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
+            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
         }
+        LastTile = myPresentTileInfo;
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY - 1)];
         GM.IsPlayerTurn = false;
     }
