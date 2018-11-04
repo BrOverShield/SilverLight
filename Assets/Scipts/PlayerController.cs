@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     int DMG = 11;
     public Slider HealthSlider;
     ActivateSound As;
+    public Sprite[] MySprites;
 	void Start ()
     {
         
@@ -48,13 +49,22 @@ public class PlayerController : MonoBehaviour
         if (CurentLife<=0)
         {
             //gameover
-            Destroy(this.gameObject);
+            GM.GameOver();
+           
         }
         recenterOnTrueTile();
         recenterOnTrueTileAuto();
     }
+    void WinTest()
+    {
+        if (this.myPresentTileInfo.isGoal)
+        {
+            GM.WinOver();
+        }
+    }
     void attack(PaysanBehavior P)
     {
+        this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[5];
         P.Life -= DMG;
        
     }
@@ -89,6 +99,7 @@ public class PlayerController : MonoBehaviour
             Dir = 3;
             
             MoveLeft();
+            this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[3];
             GM.EndTurn();
             CurentLife--;
             
@@ -97,7 +108,7 @@ public class PlayerController : MonoBehaviour
         {
             Dir = 1;
             MoveRight();
-
+            this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[1];
             GM.EndTurn();
             CurentLife--;
 
@@ -108,7 +119,7 @@ public class PlayerController : MonoBehaviour
             Moveup();
             GM.EndTurn();
             CurentLife--;
-
+            this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[4];
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
@@ -117,7 +128,7 @@ public class PlayerController : MonoBehaviour
             Movedown();
             GM.EndTurn();
             CurentLife--;
-
+            this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[2];
         }
         
     }
