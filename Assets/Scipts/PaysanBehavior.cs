@@ -23,6 +23,7 @@ public class PaysanBehavior : MonoBehaviour
     public GameObject GuardPrefab;
     public List<GameObject> Guards=new List<GameObject>();
     public guardBehavior[] GuardsBehaviors;
+    bool isactive=false;
    void Start ()
    {
        GM = FindObjectOfType<Generator>();
@@ -57,6 +58,41 @@ public class PaysanBehavior : MonoBehaviour
                     IDontKnowWhereIam = false;
                 }
             }
+            if (id == 3)
+            {
+                if (GM.mapCootoTI.ContainsKey(GM.CootoString(17, 1)))
+                {
+
+                    mytile = GM.mapCootoTI[GM.CootoString(17, 1)];
+                    IDontKnowWhereIam = false;
+                }
+                this.DMG += 5;
+                
+            }
+            if (id == 4)
+            {
+                if (GM.mapCootoTI.ContainsKey(GM.CootoString(16, 1)))
+                {
+
+                    mytile = GM.mapCootoTI[GM.CootoString(16, 1)];
+                    IDontKnowWhereIam = false;
+                }
+                this.DMG += 5;
+
+
+            }
+            if (id == 5)
+            {
+                if (GM.mapCootoTI.ContainsKey(GM.CootoString(18, 1)))
+                {
+
+                    mytile = GM.mapCootoTI[GM.CootoString(18, 1)];
+                    IDontKnowWhereIam = false;
+                }
+                this.DMG += 5;
+
+
+            }
         }
        else
        {
@@ -77,9 +113,13 @@ public class PaysanBehavior : MonoBehaviour
         {
             return;
         }
-        Guards[0].transform.position = new Vector3(17f, 0f, 1f);
-        Guards[0].GetComponent<guardBehavior>().IsActive = true;
-        Guards.Remove(Guards[0]);
+        foreach (PaysanBehavior p in GM.Paysans)
+        {
+            if(p.id==3)
+            {
+                p.isactive = true;
+            }
+        }
         HasBencalled = true;
     }
     void Attac()
@@ -217,9 +257,251 @@ public class PaysanBehavior : MonoBehaviour
             }
 
         }
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX+1, mytile.PositionY - 1)))//upLeft
+        {
+            TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX+1, mytile.PositionY - 1)];
+            if (ti == player.myPresentTileInfo)
+            {
+                Attac();
+                return;
+            }
+            if (GM.mapTItoGO[ti].GetComponentInChildren<TileUpdater>().HasPasDansLaNeige)//Si tu trouve des traces de pas
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Is that Wolf Print in the snow?";
+                Sound.GetComponent<Timeout>().t = 1;
+                isTRiggerd = true;
+                int[] coo = { mytile.PositionX+1, mytile.PositionY - 1 };//vas vers ca
+                ReversePath.Insert(0, coo);
+                moveto(mytile.PositionX+1, mytile.PositionY - 1);
+                return;
+            }
+            if (ti.HasBlood)
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponent<Timeout>().t = 1;
+                calltheGards();
+                return;
+            }
+            
+        }
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX - 1, mytile.PositionY - 1)))//upRight
+        {
+            TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX - 1, mytile.PositionY - 1)];
+            if (ti == player.myPresentTileInfo)
+            {
+                Attac();
+                return;
+            }
+            if (GM.mapTItoGO[ti].GetComponentInChildren<TileUpdater>().HasPasDansLaNeige)//Si tu trouve des traces de pas
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Is that Wolf Print in the snow?";
+                Sound.GetComponent<Timeout>().t = 1;
+                isTRiggerd = true;
+                int[] coo = { mytile.PositionX - 1, mytile.PositionY - 1 };//vas vers ca
+                ReversePath.Insert(0, coo);
+                moveto(mytile.PositionX - 1, mytile.PositionY - 1);
+                return;
+            }
+            if (ti.HasBlood)
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponent<Timeout>().t = 1;
+                calltheGards();
+                return;
+            }
+
+        }
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX - 1, mytile.PositionY + 1)))//DownRight
+        {
+            TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX - 1, mytile.PositionY + 1)];
+            if (ti == player.myPresentTileInfo)
+            {
+                Attac();
+                return;
+            }
+            if (GM.mapTItoGO[ti].GetComponentInChildren<TileUpdater>().HasPasDansLaNeige)//Si tu trouve des traces de pas
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Is that Wolf Print in the snow?";
+                Sound.GetComponent<Timeout>().t = 1;
+                isTRiggerd = true;
+                int[] coo = { mytile.PositionX - 1, mytile.PositionY + 1 };//vas vers ca
+                ReversePath.Insert(0, coo);
+                moveto(mytile.PositionX - 1, mytile.PositionY + 1);
+                return;
+            }
+            if (ti.HasBlood)
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponent<Timeout>().t = 1;
+                calltheGards();
+                return;
+            }
+
+        }
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX + 1, mytile.PositionY + 1)))//DownLeft
+        {
+            TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX + 1, mytile.PositionY + 1)];
+            if (ti == player.myPresentTileInfo)
+            {
+                Attac();
+                return;
+            }
+            if (GM.mapTItoGO[ti].GetComponentInChildren<TileUpdater>().HasPasDansLaNeige)//Si tu trouve des traces de pas
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Is that Wolf Print in the snow?";
+                Sound.GetComponent<Timeout>().t = 1;
+                isTRiggerd = true;
+                int[] coo = { mytile.PositionX + 1, mytile.PositionY + 1 };//vas vers ca
+                ReversePath.Insert(0, coo);
+                moveto(mytile.PositionX + 1, mytile.PositionY + 1);
+                return;
+            }
+            if (ti.HasBlood)
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponent<Timeout>().t = 1;
+                calltheGards();
+                return;
+            }
+
+        }
+
         Path1();
         Path2();
+        if(isactive)
+        {
+            Path3();
+        }
+        
    }
+    void Path3()
+    {
+        if (id==3)
+        {
+            print("I am spartacus 2");
+            //Reverse
+            if (ElReverso)
+            {
+                RevervePath();
+                return;
+            }
+            if (isTRiggerd)//si tu as suivit une piste et la perd
+            {
+                ElReverso = true;
+            }
+            //follow etineraire
+            print("I am spartacus 3");
+            print(mytile.PositionX + "," + mytile.PositionY);
+            if (mytile.PositionX == 17)
+            {
+                print("I am spartacus 4");
+                if (mytile.PositionY < 2)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
+                }
+            }
+            if (mytile.PositionY == 2)
+            {
+                if (mytile.PositionX > 12)
+                {
+
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX - 1, mytile.PositionY);
+
+
+                    return;
+                }
+            }
+            if (mytile.PositionX == 12)
+            {
+                if (mytile.PositionY < 4)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
+                }
+            }
+            if (mytile.PositionY == 4)
+            {
+                if (mytile.PositionX > 10)
+                {
+
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX - 1, mytile.PositionY);
+
+
+                    return;
+                }
+            }
+            if (mytile.PositionX == 10)
+            {
+                if (mytile.PositionY < 7)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
+                }
+            }
+            if (mytile.PositionY == 7)
+            {
+                if (mytile.PositionX > 5)
+                {
+
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX - 1, mytile.PositionY);
+
+
+                    return;
+                }
+            }
+            if (mytile.PositionX == 5)
+            {
+                if (mytile.PositionY > 2)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY - 1);
+                    return;
+                }
+            }
+
+
+            if (mytile.PositionY == 5)
+            {
+                if (mytile.PositionX == 2)
+                {
+                    TalkingTimer--;
+                    if (TalkingTimer <= 0)
+                    {
+                        //reverse
+                        ElReverso = true;
+                    }
+
+
+                }
+            }
+        }
+    }
     void Path2()//4,7 vers 4,2
     {
         if(id==2)
@@ -477,4 +759,9 @@ public class PaysanBehavior : MonoBehaviour
        mytile= GM.mapCootoTI[GM.CootoString(x, y)];
        this.transform.position = new Vector3(x, 0, y);
    }
+    void moveto2turn(int x1, int y1, int x2, int y2)
+    {
+
+    }
+
 }
