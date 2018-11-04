@@ -40,6 +40,7 @@ public class Generator : MonoBehaviour
         }
         Paysans = FindObjectsOfType<PaysanBehavior>();
         AB.AjouterPrefabs(MapWidth,MapHeight);
+        //AB.AjouterPrefabs(MapWidth,MapHeight);
         //killallChildren();
     }
     public void EndTurn()
@@ -109,6 +110,8 @@ public class Generator : MonoBehaviour
     {
         AB = FindObjectOfType<AlexB>();
         GenerateMap1();
+        print(MapWidth + "," + MapHeight);
+       
     }
 
     public void ResetEnemyTurn()//TurnManagingThing
