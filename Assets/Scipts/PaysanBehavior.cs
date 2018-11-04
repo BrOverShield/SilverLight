@@ -66,6 +66,7 @@ public class PaysanBehavior : MonoBehaviour
                     mytile = GM.mapCootoTI[GM.CootoString(17, 1)];
                     IDontKnowWhereIam = false;
                 }
+                this.DMG += 5;
                 print("I am spartacus");
             }
             if (id == 4)
@@ -76,7 +77,9 @@ public class PaysanBehavior : MonoBehaviour
                     mytile = GM.mapCootoTI[GM.CootoString(16, 1)];
                     IDontKnowWhereIam = false;
                 }
-                
+                this.DMG += 5;
+
+
             }
         }
        else
@@ -242,7 +245,36 @@ public class PaysanBehavior : MonoBehaviour
             }
 
         }
-        
+        /*if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX+1, mytile.PositionY - 1)))//upLeft
+        {
+            TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX+1, mytile.PositionY - 1)];
+            if (ti == player.myPresentTileInfo)
+            {
+                Attac();
+                return;
+            }
+            if (GM.mapTItoGO[ti].GetComponentInChildren<TileUpdater>().HasPasDansLaNeige)//Si tu trouve des traces de pas
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Is that Wolf Print in the snow?";
+                Sound.GetComponent<Timeout>().t = 1;
+                isTRiggerd = true;
+                int[] coo = { mytile.PositionX+1, mytile.PositionY - 1 };//vas vers ca
+                ReversePath.Insert(0, coo);
+                moveto(mytile.PositionX+1, mytile.PositionY - 1);
+                return;
+            }
+            if (ti.HasBlood)
+            {
+                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponent<Timeout>().t = 1;
+                calltheGards();
+                return;
+            }
+
+        }*/
+
         Path1();
         Path2();
         if(isactive)
@@ -628,4 +660,9 @@ public class PaysanBehavior : MonoBehaviour
        mytile= GM.mapCootoTI[GM.CootoString(x, y)];
        this.transform.position = new Vector3(x, 0, y);
    }
+    void moveto2turn(int x1, int y1, int x2, int y2)
+    {
+
+    }
+
 }
