@@ -5,7 +5,7 @@ using UnityEngine;
 //[ExecuteInEditMode]
 public class Generator : MonoBehaviour
 {
-   
+    AlexB AB;
     int MapWidth;
     int MapHeight;
     public Texture2D Map2D1;
@@ -39,6 +39,7 @@ public class Generator : MonoBehaviour
             }
         }
         Paysans = FindObjectsOfType<PaysanBehavior>();
+        AB.AjouterPrefabs(MapWidth,MapHeight);
         //killallChildren();
     }
     public void EndTurn()
@@ -106,6 +107,7 @@ public class Generator : MonoBehaviour
     }
     private void Start()
     {
+        AB = FindObjectOfType<AlexB>();
         GenerateMap1();
     }
 

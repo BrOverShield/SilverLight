@@ -300,6 +300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 679261785}
   - component: {fileID: 679261784}
+  - component: {fileID: 679261786}
   m_Layer: 0
   m_Name: Generator
   m_TagString: Untagged
@@ -338,6 +339,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &679261786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 679261783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24214822414a6ba4ba3b213dc2f72469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BLCornerPrefab: {fileID: 1689280204814474, guid: c25c67619d73a0145a06b41b91a963e9,
+    type: 2}
+  BRCornerPrefab: {fileID: 1356043004232768, guid: eae990ed74752f348a6846285a7ed86c,
+    type: 2}
+  FLCornerPrefab: {fileID: 1341235569233782, guid: 151f77a55a020e042af9ef302292a43b,
+    type: 2}
+  FRCornerPrefab: {fileID: 1060345806390540, guid: 4f6661734c8817642a2c116598f59184,
+    type: 2}
+  FWallPrefab: {fileID: 1623118523505916, guid: 24912234d3087764db61320c5d21eb0b,
+    type: 2}
+  LWallPrefab: {fileID: 1103269511305778, guid: ce8d71e514e22124a8e63e72293a1ff7,
+    type: 2}
+  BWallPrefab: {fileID: 1925830894860978, guid: 86eca3039145b804a9c334455b5db88e,
+    type: 2}
+  RWallPrefab: {fileID: 1454379249533764, guid: a6f3e0edf39bd1f4aa3b30c58fbb81d4,
+    type: 2}
+  MapHolder: {fileID: 791994087}
+  GM: {fileID: 0}
 --- !u!1 &743740155
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ using UnityEngine;
 public class TileUpdater : MonoBehaviour
 {
     TileInfo myInfo;
-    public Material[] mats =new Material[7];
+    public Material[] mats =new Material[8];
     PlayerController player;
     public bool StartLocation = false;
     Generator GM;
@@ -54,21 +54,28 @@ public class TileUpdater : MonoBehaviour
         myInfo = ti;
         ti.myGo = this.gameObject;
 
-        if(ti.type==20)
+        if(ti.type==20)//Pier
         {
             GetComponentInChildren<MeshRenderer>().material = mats[0];
+            this.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(1, 4), 0);
         }
-        if (ti.type == 60)
+        if (ti.type == 40)//Terre
+        {
+            GetComponentInChildren<MeshRenderer>().material = mats[7];
+            this.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(1, 4), 0);
+        }
+        if (ti.type == 60)//Neige
         {
             GetComponentInChildren<MeshRenderer>().material = mats[1];
+            this.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(1,4), 0);
         }
-        if (ti.type == 80)
+        if (ti.type == 80)//bois
         {
             GetComponentInChildren<MeshRenderer>().material = mats[2];
         }
-        if (ti.type == 100)
+        if (ti.type == 100)//block
         {
-            GetComponentInChildren<MeshRenderer>().material = mats[3];
+            GetComponentInChildren<MeshRenderer>().material = mats[2];
         }
         if (ti.type == 120)
         {
