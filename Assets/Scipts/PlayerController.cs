@@ -17,7 +17,9 @@ public class PlayerController : MonoBehaviour
     public GameObject PasDansLaNeige;
     public int Porte = 5;
     public GameObject PasPas;
-
+    public int CurentLife = 100;
+    int MaxLife = 100;
+    int DMG = 11;
 	void Start ()
     {
         
@@ -30,18 +32,31 @@ public class PlayerController : MonoBehaviour
     //Result
     private void Update()
     {
-
-        Moving();
+        if(GM.IsPlayerTurn)
+        {
+            Moving();
+        }
+        
+        if(CurentLife<=0)
+        {
+            //gameover
+            Destroy(this.gameObject);
+        }
+    }
+    void attack(PaysanBehavior P)
+    {
+        P.Life -= DMG;
     }
     void Moving()
     {
+        
         
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             Dir = 3;
             MoveLeft();
             GM.EndTurn();
-            
+            CurentLife++;
             
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -49,7 +64,7 @@ public class PlayerController : MonoBehaviour
             Dir = 1;
             MoveRight();
             GM.EndTurn();
-
+            CurentLife++;
 
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -57,7 +72,7 @@ public class PlayerController : MonoBehaviour
             Dir = 4;
             Moveup();
             GM.EndTurn();
-
+            CurentLife++;
 
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -65,7 +80,7 @@ public class PlayerController : MonoBehaviour
             Dir = 2;
             Movedown();
             GM.EndTurn();
-
+            CurentLife++;
 
         }
         
@@ -82,6 +97,8 @@ public class PlayerController : MonoBehaviour
             GameObject SnowStep = Instantiate(PasDansLaNeige, new Vector3(LastTile.PositionX, 0.02f, LastTile.PositionY), SnowStepDirection,GM.mapTItoGO[LastTile].transform);
             Tu.DirectionDePasDansLaNeige = Dir;
             Tu.SnowStep = SnowStep;
+            Tu.HasPasDansLaNeige = true;
+            SnowStep.GetComponent<SnowStepFade>().tu = Tu;
             //SnowStep.GetComponent<SnowStepFade>().PasDansLaNeigeTimer = 5;
         }
         
@@ -96,6 +113,14 @@ public class PlayerController : MonoBehaviour
         if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)].type))
         {
             return;
+        }
+        foreach (PaysanBehavior P in GM.Paysans)
+        {
+            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
+            {
+                attack(P);
+                return;
+            }
         }
         Vector3 Myposition = this.transform.position;
         Vector3 Destination = this.transform.position + new Vector3(-1, 0, 0);
@@ -120,7 +145,14 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-
+        foreach (PaysanBehavior P in GM.Paysans)
+        {
+            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
+            {
+                attack(P);
+                return;
+            }
+        }
         Vector3 Myposition = this.transform.position;
         Vector3 Destination = this.transform.position + new Vector3(+1, 0, 0);
         for (int i = 0; i < 1; i++)
@@ -141,6 +173,14 @@ public class PlayerController : MonoBehaviour
         if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY+1)].type))
         {
             return;
+        }
+        foreach (PaysanBehavior P in GM.Paysans)
+        {
+            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
+            {
+                attack(P);
+                return;
+            }
         }
         Vector3 Myposition = this.transform.position;
         Vector3 Destination = this.transform.position + new Vector3(0, 0, 1);
@@ -169,6 +209,14 @@ public class PlayerController : MonoBehaviour
         {
             this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
         }
+        foreach (PaysanBehavior P in GM.Paysans)
+        {
+            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
+            {
+                attack(P);
+                return;
+            }
+        }
         LastTile = myPresentTileInfo;
         SnowStep();
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY - 1)];
@@ -179,7 +227,7 @@ public class PlayerController : MonoBehaviour
 
     bool Blocking(int type)
     {
-        if (type == 100 || type == 120 || type == 110 || type == 200)
+        if (type == 100 || /*type == 120 ||*/ type == 110 || type == 200)
         {
             return true;
         }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class SnowStepFade : MonoBehaviour
 {
     public int PasDansLaNeigeTimer = 5;
+    public TileUpdater tu;
     public void PasDansLaNeigeTimerDown()
     {
 
@@ -15,6 +16,7 @@ public class SnowStepFade : MonoBehaviour
 
         if (PasDansLaNeigeTimer<=0)
         {
+            tu.HasPasDansLaNeige = false;
             Destroy(this.gameObject);
         }
     }

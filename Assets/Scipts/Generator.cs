@@ -18,6 +18,7 @@ public class Generator : MonoBehaviour
     //TurnManagingThings
     public bool IsPlayerTurn = true;
     public int TurnNumber=0;
+    public PaysanBehavior[] Paysans;
     void GenerateMap1()
     {
         MapWidth = Map2D1.width;
@@ -36,16 +37,29 @@ public class Generator : MonoBehaviour
                 UpdateGo(TI);
             }
         }
+        Paysans = FindObjectsOfType<PaysanBehavior>();
         //killallChildren();
     }
     public void EndTurn()
     {
         TurnNumber++;
+        IsPlayerTurn = false;
         SnowStepFade[] mysteps = FindObjectsOfType<SnowStepFade>();
         foreach (SnowStepFade ssf in mysteps)
         {
             ssf.PasDansLaNeigeTimerDown();
         }
+        Paysans = FindObjectsOfType<PaysanBehavior>();
+        foreach (PaysanBehavior paysan in Paysans)
+        {
+            paysan.DoTurn();
+        }
+        Timeout[] Timeouts = FindObjectsOfType<Timeout>();
+        foreach (Timeout T in Timeouts)
+        {
+            T.DoTurn();
+        }
+        IsPlayerTurn = true;
     }
     void killallChildren()
     {
