@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class Generator : MonoBehaviour
 {
-    public bool IsPlayerTurn = true;
+   
     int MapWidth;
     int MapHeight;
     public Texture2D Map2D1;
     public GameObject TilePrefab;//Le prefab des thuiles generes
     public Transform MapHolder;
-    Dictionary<TileInfo, GameObject> mapTItoGO = new Dictionary<TileInfo, GameObject>();//map les info vers le visuel de la thuil
+    public Dictionary<TileInfo, GameObject> mapTItoGO = new Dictionary<TileInfo, GameObject>();//map les info vers le visuel de la thuil
     public Dictionary<GameObject, TileInfo> mapGOtoTI = new Dictionary<GameObject, TileInfo>();//map le visuel vers les info
     public Dictionary<string, TileInfo> mapCootoTI = new Dictionary<string, TileInfo>();//map les coo vers les tileinfo
     public List<TileInfo> mapinfo = new List<TileInfo>();//Contiens toutes les info de la map
-
-   
+    //TurnManagingThings
+    public bool IsPlayerTurn = true;
+    public int TurnNumber=0;
     void GenerateMap1()
     {
         MapWidth = Map2D1.width;
@@ -35,10 +36,19 @@ public class Generator : MonoBehaviour
                 UpdateGo(TI);
             }
         }
+        //killallChildren();
+    }
+    void killallChildren()
+    {
+       TileUpdater[] Children=FindObjectsOfType<TileUpdater>();
+        foreach (TileUpdater child in Children)
+        {
+            Destroy(child);
+        }
     }
     void StartLocation(int x,int y,TileInfo ti)
     {
-        if(x==2&&y==2)
+        if(x==18&&y==37)
         {
             mapTItoGO[ti].GetComponent<TileUpdater>().StartLocation = true; 
         }
@@ -66,7 +76,7 @@ public class Generator : MonoBehaviour
         GenerateMap1();
     }
 
-    public void ResetEnemyTurn()
+    public void ResetEnemyTurn()//TurnManagingThing
     {
         DetectionEnemy[] Enemies= FindObjectsOfType<DetectionEnemy>();
         foreach (DetectionEnemy  E in Enemies)

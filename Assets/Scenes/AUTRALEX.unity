@@ -456,8 +456,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPlayerTurn: 1
+<<<<<<< HEAD
   Map2D1: {fileID: 2800000, guid: 388a41ffb14320d4aa0472d00f551538, type: 3}
   TilePrefab: {fileID: 832560507}
+=======
+  Map2D1: {fileID: 2800000, guid: addc20d72c3a3fe4fba5f17922b8cf4c, type: 3}
+  TilePrefab: {fileID: 1270253739733536, guid: 9e2243d542131de4dac71801cca64c3e, type: 2}
+>>>>>>> 3d48772c7b9c6367987260f6a24fcb9ea7224feb
   MapHolder: {fileID: 1478812309}
 --- !u!4 &1303987843
 Transform:
@@ -483,6 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 765849c93d46f4345b3e0269aaed918d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   Map2D1: {fileID: 2800000, guid: c5ec3f362d5279942bb876b0662418f4, type: 3}
   TilePrefab: {fileID: 832560507}
   BLCornerPrefab: {fileID: 1148767825}
@@ -493,6 +499,29 @@ MonoBehaviour:
   LWallPrefab: {fileID: 1978921757}
   BWallPrefab: {fileID: 517858140}
   RWallPrefab: {fileID: 2033367396}
+=======
+  Map2D1: {fileID: 2800000, guid: 388a41ffb14320d4aa0472d00f551538, type: 3}
+  TilePrefab: {fileID: 1270253739733536, guid: 9e2243d542131de4dac71801cca64c3e, type: 2}
+  BLCornerPrefab: {fileID: 1689280204814474, guid: c25c67619d73a0145a06b41b91a963e9,
+    type: 2}
+  BRCornerPrefab: {fileID: 1356043004232768, guid: eae990ed74752f348a6846285a7ed86c,
+    type: 2}
+  FLCornerPrefab: {fileID: 1341235569233782, guid: 151f77a55a020e042af9ef302292a43b,
+    type: 2}
+  FRCornerPrefab: {fileID: 1060345806390540, guid: 4f6661734c8817642a2c116598f59184,
+    type: 2}
+  FWallPrefab: {fileID: 1623118523505916, guid: 24912234d3087764db61320c5d21eb0b,
+    type: 2}
+  LWallPrefab: {fileID: 1103269511305778, guid: ce8d71e514e22124a8e63e72293a1ff7,
+    type: 2}
+  BWallPrefab: {fileID: 1925830894860978, guid: 86eca3039145b804a9c334455b5db88e,
+    type: 2}
+  RWallPrefab: {fileID: 1454379249533764, guid: a6f3e0edf39bd1f4aa3b30c58fbb81d4,
+    type: 2}
+  TreePrefab: {fileID: 1681661906585868, guid: b5b716c474cf3fa48890e2b1cb07774b, type: 2}
+  PillarPrefab: {fileID: 1080184123494938, guid: 5ff2984808f2afa4f82a3f13c766917c,
+    type: 2}
+>>>>>>> 3d48772c7b9c6367987260f6a24fcb9ea7224feb
   MapHolder: {fileID: 1478812309}
 --- !u!1 &1315230782 stripped
 GameObject:
