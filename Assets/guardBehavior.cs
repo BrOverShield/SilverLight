@@ -2,99 +2,92 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PaysanBehavior : MonoBehaviour
+public class guardBehavior : MonoBehaviour
 {
-
-    
-   public TileInfo mytile;
-   bool IDontKnowWhereIam=true;
-   Generator GM;
-   bool isTRiggerd = false;
-   bool doorisopen=false;
-    int TalkingTimer=5;
+    public TileInfo mytile;
+    bool IDontKnowWhereIam = true;
+    Generator GM;
+    bool isTRiggerd = false;
+    bool doorisopen = false;
+    int TalkingTimer = 5;
     bool ElReverso = false;
     PlayerController player;
-    int DMG=5;
-    public int Life = 30;
+    int DMG = 10;
+    public int Life = 50;
     public int id = 0;
     public GameObject SonDeClocheAlertePrefab;
     bool isAlerted = false;
     public GameObject Blood;
     public GameObject GuardPrefab;
-   void Start ()
-   {
-       GM = FindObjectOfType<Generator>();
+    private void Start()
+    {
+        GM = FindObjectOfType<Generator>();
         player = FindObjectOfType<PlayerController>();
-   }
-
-   // Update is called once per frame
-   void Update ()
-   {
-       if(IDontKnowWhereIam)
-       {
-            if(id==1)
-            {
-                if (GM.mapCootoTI.ContainsKey(GM.CootoString(16, 11)))
-                {
-
-                    mytile = GM.mapCootoTI[GM.CootoString(16, 11)];
-                    IDontKnowWhereIam = false;
-                }
-            }
-            if (id == 2)
-            {
-                if (GM.mapCootoTI.ContainsKey(GM.CootoString(4, 7)))
-                {
-
-                    mytile = GM.mapCootoTI[GM.CootoString(4, 7)];
-                    IDontKnowWhereIam = false;
-                }
-            }
-        }
-       else
-       {
-
-       }
-       if(Life<=0)
+        
+    }
+    void Update()
+    {
+        if (IDontKnowWhereIam)
         {
-            player.CurentLife += 80;
-            Instantiate(Blood, this.transform.position, Quaternion.identity);
+            if (id == 0)
+            {
+                if (GM.mapCootoTI.ContainsKey(GM.CootoString(17, 1)))
+                {
+
+                    mytile = GM.mapCootoTI[GM.CootoString(17, 1)];
+                    IDontKnowWhereIam = false;
+                }
+            }
+            
+        }
+        else
+        {
+
+        }
+        if (Life <= 0)
+        {
             mytile.HasBlood = true;
+            player.CurentLife += 100;
+            Instantiate(Blood, this.transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
-   }
-    bool HasBencalled = false;
-    void calltheGards()
-    {
-        if(HasBencalled)
-        {
-            return;
-        }
-        Instantiate(GuardPrefab, new Vector3(17f, 0f, 1f), Quaternion.identity);
-        HasBencalled = true;
     }
     void Attac()
     {
-        if(Random.Range(1,10)<30)
+        if (Random.Range(1, 10) < 30)
         {
-           GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
+            GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
             Sound.GetComponentInChildren<TextMesh>().text = "Die WhereWolf";
         }
         player.CurentLife -= DMG;
     }
-    void SonneAlerte()
+    void calltheGards()
     {
-        Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
-        calltheGards();
+        Instantiate(GuardPrefab, new Vector3(17f, 0f, 1f), Quaternion.identity);
     }
     List<int[]> ReversePath = new List<int[]>();
-   public void DoTurn()
-   {
-        
-        if(GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX,mytile.PositionY-1)))//up
+    public void DoTurn()
+    {
+        if(mytile==null)
+        {
+            print("mytileestnull");
+            if(GM.mapCootoTI.ContainsKey(GM.CootoString(17,1)))
+            {
+                print("pas de trouble");
+            }
+            mytile = GM.mapCootoTI[GM.CootoString(17, 1)];
+            IDontKnowWhereIam = false;
+        }
+        if (mytile == null)
+        {
+            print("mytileeststill null");
+            mytile = GM.mapCootoTI[GM.CootoString(17, 1)];
+            IDontKnowWhereIam = false;
+        }
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX, mytile.PositionY - 1)))//up
         {
             TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX, mytile.PositionY - 1)];
-            if(ti==player.myPresentTileInfo)
+            if (ti == player.myPresentTileInfo)
             {
                 Attac();
                 return;
@@ -107,18 +100,17 @@ public class PaysanBehavior : MonoBehaviour
                 isTRiggerd = true;
                 int[] coo = { mytile.PositionX, mytile.PositionY - 1 };//vas vers ca
                 ReversePath.Insert(0, coo);
-                moveto(mytile.PositionX, mytile.PositionY-1);
+                moveto(mytile.PositionX, mytile.PositionY - 1);
                 return;
             }
-            if (ti.HasBlood)
+            if(ti.HasBlood)
             {
                 GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
-                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponentInChildren<TextMesh>().text = "There is Blood Here, CALL THE GUARDS";
                 Sound.GetComponent<Timeout>().t = 1;
                 calltheGards();
                 return;
             }
-
         }
         if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX, mytile.PositionY + 1)))//down
         {
@@ -142,16 +134,16 @@ public class PaysanBehavior : MonoBehaviour
             if (ti.HasBlood)
             {
                 GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
-                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponentInChildren<TextMesh>().text = "There is Blood Here, CALL THE GUARDS";
                 Sound.GetComponent<Timeout>().t = 1;
                 calltheGards();
                 return;
             }
 
         }
-        if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX+1, mytile.PositionY )))//left
+        if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX + 1, mytile.PositionY)))//left
         {
-            TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX+1, mytile.PositionY)];
+            TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX + 1, mytile.PositionY)];
             if (ti == player.myPresentTileInfo)
             {
                 Attac();
@@ -164,15 +156,15 @@ public class PaysanBehavior : MonoBehaviour
                 Sound.GetComponentInChildren<TextMesh>().text = "Is that Wolf Print in the snow?";
                 Sound.GetComponent<Timeout>().t = 1;
                 isTRiggerd = true;
-                int[] coo = { mytile.PositionX+1, mytile.PositionY };//vas vers ca
+                int[] coo = { mytile.PositionX + 1, mytile.PositionY };//vas vers ca
                 ReversePath.Insert(0, coo);
-                moveto(mytile.PositionX+1, mytile.PositionY );
+                moveto(mytile.PositionX + 1, mytile.PositionY);
                 return;
             }
             if (ti.HasBlood)
             {
                 GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
-                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponentInChildren<TextMesh>().text = "There is Blood Here, CALL THE GUARDS";
                 Sound.GetComponent<Timeout>().t = 1;
                 calltheGards();
                 return;
@@ -201,7 +193,7 @@ public class PaysanBehavior : MonoBehaviour
             if (ti.HasBlood)
             {
                 GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
-                Sound.GetComponentInChildren<TextMesh>().text = "Help Someone Has Ben Killed! CALL THE GUARDS";
+                Sound.GetComponentInChildren<TextMesh>().text = "There is Blood Here, CALL THE GUARDS";
                 Sound.GetComponent<Timeout>().t = 1;
                 calltheGards();
                 return;
@@ -209,44 +201,10 @@ public class PaysanBehavior : MonoBehaviour
 
         }
         Path1();
-        Path2();
-   }
-    void Path2()//4,7 vers 4,2
-    {
-        if(id==2)
-        {
-           
-            if(player.myPresentTileInfo==GM.mapCootoTI[GM.CootoString(8,7)])//si le joueur se trouve a la porte
-            {
-                //vas tenter de sonner l<alerte
-                isAlerted = true;
-                GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
-                Sound.GetComponentInChildren<TextMesh>().text = "Help!, Help! A whereWolf!";
-            }
-            if(isAlerted==true)
-            {
-                if (mytile.PositionX == 4)
-                {
-                    if (mytile.PositionY > 2)
-                    {
-
-
-
-                        moveto(mytile.PositionX, mytile.PositionY - 1);
-                        return;
-                    }
-                }
-                if (mytile.PositionX == 4 && mytile.PositionY == 2)
-                {
-                    SonneAlerte();
-                    return;
-                }
-            }
-        }
     }
     void Path1()
     {
-        if (id==1)
+        if (true)
         {
             //Reverse
             if (ElReverso)
@@ -260,22 +218,18 @@ public class PaysanBehavior : MonoBehaviour
             }
             //follow etineraire
 
-            if (mytile.PositionY == 11)
+            if (mytile.PositionX == 17)
             {
-                if (mytile.PositionX == 16)
+                if (mytile.PositionY < 2)
                 {
-
-                    if (TalkingTimer > 0)
-                    {
-                        TalkingTimer--;
-                        int[] coo = { mytile.PositionX, mytile.PositionY };
-                        ReversePath.Insert(0, coo);
-                        return;
-                    }
-
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
                 }
             }
-            if (mytile.PositionY == 11)
+            if (mytile.PositionY == 2)
             {
                 if (mytile.PositionX > 12)
                 {
@@ -290,7 +244,55 @@ public class PaysanBehavior : MonoBehaviour
             }
             if (mytile.PositionX == 12)
             {
-                if (mytile.PositionY > 9)
+                if (mytile.PositionY < 4)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
+                }
+            }
+            if (mytile.PositionY == 4)
+            {
+                if (mytile.PositionX > 10)
+                {
+
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX - 1, mytile.PositionY);
+
+
+                    return;
+                }
+            }
+            if (mytile.PositionX == 10)
+            {
+                if (mytile.PositionY < 7)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
+                }
+            }
+            if (mytile.PositionY == 7)
+            {
+                if (mytile.PositionX > 5)
+                {
+
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX - 1, mytile.PositionY);
+
+
+                    return;
+                }
+            }
+            if (mytile.PositionX == 5)
+            {
+                if (mytile.PositionY > 2)
                 {
                     TalkingTimer = 5;
                     int[] coo = { mytile.PositionX, mytile.PositionY };
@@ -299,111 +301,11 @@ public class PaysanBehavior : MonoBehaviour
                     return;
                 }
             }
-            if (mytile.PositionY == 9)
+
+
+            if (mytile.PositionY == 5)
             {
-                if (mytile.PositionX > 9)
-                {
-                    int[] coo = { mytile.PositionX, mytile.PositionY };
-                    ReversePath.Insert(0, coo);
-                    moveto(mytile.PositionX - 1, mytile.PositionY);
-                    return;
-                }
-            }
-            if (mytile.PositionX == 9)
-            {
-                if (mytile.PositionY > 7)
-                {
-                    int[] coo = { mytile.PositionX, mytile.PositionY };
-                    ReversePath.Insert(0, coo);
-                    moveto(mytile.PositionX, mytile.PositionY - 1);
-                    return;
-                }
-            }
-            if (mytile.PositionY == 7)
-            {
-                if (mytile.PositionX > 8)
-                {
-                    int[] coo = { mytile.PositionX, mytile.PositionY };
-                    ReversePath.Insert(0, coo);
-                    moveto(mytile.PositionX - 1, mytile.PositionY);
-                    return;
-                }
-            }
-            if (mytile.PositionY == 7)
-            {
-                if (mytile.PositionX == 9)
-                {
-                    int[] coo = { mytile.PositionX, mytile.PositionY };
-                    ReversePath.Insert(0, coo);
-                    if (doorisopen == false)
-                    {
-                        //open door
-                        doorisopen = true;
-                        return;
-
-                    }
-                    else
-                    {
-                        int[] coo2 = { mytile.PositionX, mytile.PositionY };
-                        ReversePath.Insert(0, coo);
-                        moveto(mytile.PositionX - 1, mytile.PositionY);
-                        return;
-                    }
-
-                }
-            }
-            if (mytile.PositionY == 7)
-            {
-                if (mytile.PositionX == 8)
-                {
-                    //on door space
-                    int[] coo = { mytile.PositionX, mytile.PositionY };
-                    ReversePath.Insert(0, coo);
-                    moveto(mytile.PositionX - 1, mytile.PositionY);
-                    return;
-
-                }
-            }
-            if (mytile.PositionY == 7)
-            {
-                if (mytile.PositionX == 7)
-                {
-
-                    if (doorisopen)
-                    {
-                        //close door
-                        int[] coo = { mytile.PositionX, mytile.PositionY };
-                        ReversePath.Insert(0, coo);
-                        doorisopen = false;
-                        return;
-
-                    }
-                    else
-                    {
-                        int[] coo = { mytile.PositionX, mytile.PositionY };
-                        ReversePath.Insert(0, coo);
-                        moveto(mytile.PositionX - 1, mytile.PositionY);
-                        return;
-                    }
-
-                }
-            }
-
-            if (mytile.PositionY == 7)
-            {
-                if (mytile.PositionX > 5)
-                {
-
-
-                    int[] coo = { mytile.PositionX, mytile.PositionY };
-                    ReversePath.Insert(0, coo);
-                    moveto(mytile.PositionX - 1, mytile.PositionY);
-                    return;
-                }
-            }
-            if (mytile.PositionY == 7)
-            {
-                if (mytile.PositionX == 5)
+                if (mytile.PositionX == 2)
                 {
                     TalkingTimer--;
                     if (TalkingTimer <= 0)
@@ -417,55 +319,25 @@ public class PaysanBehavior : MonoBehaviour
             }
         }
     }
-    int i = 0;
     void RevervePath()
     {
 
-       /*  i++;
-
-   if(ReversePath.Count<i)
-     {
-         ReversePath.Clear();
-         i = 0;
-         TalkingTimer = 5;
-         ElReverso = false;
-         return;
-    }
-         int[] coo = ReversePath[i];
-         moveto(coo[0], coo[1]);
-         return;
-        */
-        if(ReversePath.Count<=0)
+        
+        if (ReversePath.Count <= 0)
         {
             isTRiggerd = false;
             ElReverso = false;
             return;
         }
         int[] coo = ReversePath[0];
-        moveto(coo[0],coo[1]);
+        moveto(coo[0], coo[1]);
         ReversePath.Remove(ReversePath[0]);
         return;
     }
-   void moveLeftDown(int fromX,int FromY,int ToX,int ToY)
-   {
-       if (mytile.PositionY == FromY)
-       {
-           if (mytile.PositionX > ToX)
-           {
-               moveto(mytile.PositionX - 1, mytile.PositionY);
-           }
-       }
-       if (mytile.PositionX == fromX)
-       {
-           if (mytile.PositionY > ToY)
-           {
-               moveto(mytile.PositionX, mytile.PositionY - 1);
-           }
-       }
-   }
-   void moveto(int x,int y)
-   {
-       mytile= GM.mapCootoTI[GM.CootoString(x, y)];
-       this.transform.position = new Vector3(x, 0, y);
-   }
+    void moveto(int x, int y)
+    {
+        mytile = GM.mapCootoTI[GM.CootoString(x, y)];
+        this.transform.position = new Vector3(x, 0, y);
+    }
+
 }
