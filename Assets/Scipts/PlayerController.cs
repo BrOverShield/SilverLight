@@ -14,8 +14,9 @@ public class PlayerController : MonoBehaviour
     //GameObject myPresentTile;
     public TileInfo myPresentTileInfo;
     int Dir;
+    public GameObject PasDansLaNeige;
     public int Porte = 5;
-    
+    public GameObject PasPas;
 
 	void Start ()
     {
@@ -37,27 +38,35 @@ public class PlayerController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            Dir = 3;
             MoveLeft();
-            GM.TurnNumber++;
-            Dir = 4;
+            GM.EndTurn();
+            
+            
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            Dir = 1;
             MoveRight();
-            GM.TurnNumber++;
-            Dir = 2;
+            GM.EndTurn();
+
+
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
+            Dir = 4;
             Moveup();
-            GM.TurnNumber++;
-            Dir = 1;
+            GM.EndTurn();
+
+
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
+            Dir = 2;
             Movedown();
-            GM.TurnNumber++;
-            Dir = 3;
+            GM.EndTurn();
+
+
         }
         
     }
@@ -68,10 +77,12 @@ public class PlayerController : MonoBehaviour
             TileUpdater Tu = GM.mapTItoGO[LastTile].GetComponent<TileUpdater>();
             Tu.HasPasDansLaNeige = true;
             
-            Tu.PasDansLaNeigeTimer = 6;
-            Tu.UpdateMeCurrent();
+            
+            Quaternion SnowStepDirection = Quaternion.Euler(0, 90 * Dir, 0);
+            GameObject SnowStep = Instantiate(PasDansLaNeige, new Vector3(LastTile.PositionX, 0.02f, LastTile.PositionY), SnowStepDirection,GM.mapTItoGO[LastTile].transform);
             Tu.DirectionDePasDansLaNeige = Dir;
-
+            Tu.SnowStep = SnowStep;
+            //SnowStep.GetComponent<SnowStepFade>().PasDansLaNeigeTimer = 5;
         }
         
 
@@ -94,6 +105,7 @@ public class PlayerController : MonoBehaviour
 
         }
         LastTile = myPresentTileInfo;
+        SnowStep();
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)];
         GM.IsPlayerTurn = false;
 
@@ -116,6 +128,7 @@ public class PlayerController : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
         }
         LastTile = myPresentTileInfo;
+        SnowStep();
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)];
         GM.IsPlayerTurn = false;
     }
@@ -136,6 +149,7 @@ public class PlayerController : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
         }
         LastTile = myPresentTileInfo;
+        SnowStep();
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY + 1)];
         GM.IsPlayerTurn = false;
     }
@@ -156,6 +170,7 @@ public class PlayerController : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
         }
         LastTile = myPresentTileInfo;
+        SnowStep();
         myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY - 1)];
         GM.IsPlayerTurn = false;
     }

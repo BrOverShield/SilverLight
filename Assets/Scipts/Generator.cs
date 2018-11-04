@@ -38,6 +38,15 @@ public class Generator : MonoBehaviour
         }
         //killallChildren();
     }
+    public void EndTurn()
+    {
+        TurnNumber++;
+        SnowStepFade[] mysteps = FindObjectsOfType<SnowStepFade>();
+        foreach (SnowStepFade ssf in mysteps)
+        {
+            ssf.PasDansLaNeigeTimerDown();
+        }
+    }
     void killallChildren()
     {
        TileUpdater[] Children=FindObjectsOfType<TileUpdater>();
