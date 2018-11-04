@@ -24,42 +24,42 @@ public class ActivateSound : MonoBehaviour {
 	{
 	}
 
-	void PlayChatGarouSound()
+	public void PlayChatGarouSound()
 	{
 		chatGarouSound.Play(0);
 	}
 
-	void PlayClocheSound()
+    public void PlayClocheSound()
 	{
 		clocheSound.Play(0);
 	}
 
-	void PlayCrounchSound()
+    public void PlayCrounchSound()
 	{
 		crounchSound.Play(0);
 	}
 
-	void PlayPaysanAttackSound()
+    public void PlayPaysanAttackSound()
 	{
 		PaysanAttackSound.Play(0);
 	}
 
-	void PlayPaysanCuriousSound1()
+    public void PlayPaysanCuriousSound1()
 	{
 		paysanCuriousSound1.Play(0);
 	}
 
-	void PlayPaysanCuriousSound2()
+    public void PlayPaysanCuriousSound2()
 	{
 		paysanCuriousSound2.Play(0);
 	}
 
-	void PlayPaysanCuriousSound3()
+    public void PlayPaysanCuriousSound3()
 	{
 		paysanCuriousSound3.Play(0);
 	}
 
-	void PlayDeathSound()
+    public void PlayDeathSound()
 	{
 		deathSound.Play(0);
 	}
