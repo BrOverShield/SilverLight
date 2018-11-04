@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 291998254}
   - component: {fileID: 291998253}
   m_Layer: 0
-  m_Name: Genrator2
+  m_Name: Generator2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
