@@ -5,7 +5,7 @@ using UnityEngine;
 public class guardBehavior : MonoBehaviour
 {
     public TileInfo mytile;
-    bool IDontKnowWhereIam = true;
+    public bool IDontKnowWhereIam = true;
     Generator GM;
     bool isTRiggerd = false;
     bool doorisopen = false;
@@ -19,6 +19,7 @@ public class guardBehavior : MonoBehaviour
     bool isAlerted = false;
     public GameObject Blood;
     public GameObject GuardPrefab;
+    public bool IsActive = false;
     private void Start()
     {
         GM = FindObjectOfType<Generator>();
@@ -68,7 +69,7 @@ public class guardBehavior : MonoBehaviour
     List<int[]> ReversePath = new List<int[]>();
     public void DoTurn()
     {
-        if(mytile==null)
+       /* if(mytile==null)
         {
             print("mytileestnull");
             if(GM.mapCootoTI.ContainsKey(GM.CootoString(17,1)))
@@ -76,14 +77,14 @@ public class guardBehavior : MonoBehaviour
                 print("pas de trouble");
             }
             mytile = GM.mapCootoTI[GM.CootoString(17, 1)];
-            IDontKnowWhereIam = false;
+            
         }
         if (mytile == null)
         {
             print("mytileeststill null");
             mytile = GM.mapCootoTI[GM.CootoString(17, 1)];
-            IDontKnowWhereIam = false;
-        }
+            
+        }*/
         if (GM.mapCootoTI.ContainsKey(GM.CootoString(mytile.PositionX, mytile.PositionY - 1)))//up
         {
             TileInfo ti = GM.mapCootoTI[GM.CootoString(mytile.PositionX, mytile.PositionY - 1)];

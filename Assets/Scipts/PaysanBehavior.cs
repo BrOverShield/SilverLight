@@ -21,10 +21,17 @@ public class PaysanBehavior : MonoBehaviour
     bool isAlerted = false;
     public GameObject Blood;
     public GameObject GuardPrefab;
+    public List<GameObject> Guards=new List<GameObject>();
+    public guardBehavior[] GuardsBehaviors;
    void Start ()
    {
        GM = FindObjectOfType<Generator>();
         player = FindObjectOfType<PlayerController>();
+        GuardsBehaviors = FindObjectsOfType<guardBehavior>();
+        foreach (guardBehavior GB in GuardsBehaviors)
+        {
+            Guards.Add(GB.gameObject);
+        }
    }
 
    // Update is called once per frame
@@ -70,7 +77,9 @@ public class PaysanBehavior : MonoBehaviour
         {
             return;
         }
-        Instantiate(GuardPrefab, new Vector3(17f, 0f, 1f), Quaternion.identity);
+        Guards[0].transform.position = new Vector3(17f, 0f, 1f);
+        Guards[0].GetComponent<guardBehavior>().IsActive = true;
+        Guards.Remove(Guards[0]);
         HasBencalled = true;
     }
     void Attac()

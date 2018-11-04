@@ -58,6 +58,10 @@ public class Generator : MonoBehaviour
         Guards = FindObjectsOfType<guardBehavior>();
         foreach (guardBehavior guard in Guards)
         {
+            if(guard.IDontKnowWhereIam)
+            {
+                guard.mytile = mapCootoTI[CootoString(17, 1)];
+            }
             guard.DoTurn();
         }
         Timeout[] Timeouts = FindObjectsOfType<Timeout>();
