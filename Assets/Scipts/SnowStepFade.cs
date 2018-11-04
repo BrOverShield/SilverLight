@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SnowStepFade : MonoBehaviour
 {
-    public int PasDansLaNeigeTimer = 5;
+    public int PasDansLaNeigeTimer = 7;
     public TileUpdater tu;
     public void PasDansLaNeigeTimerDown()
     {
 
         PasDansLaNeigeTimer--;
-        Color NewColor = new Color(1, 1, 1, (float)(PasDansLaNeigeTimer / 5f));
+        Color NewColor = new Color(1, 1, 1, (float)(PasDansLaNeigeTimer / 7f));
         //GetComponentInChildren<SpriteRenderer>().color = NewColor;
         GetComponentInChildren<SpriteRenderer>().material.color = NewColor;
 
