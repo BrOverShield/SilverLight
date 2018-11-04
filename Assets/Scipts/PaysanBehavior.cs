@@ -502,6 +502,7 @@ public class PaysanBehavior : MonoBehaviour
             }
         }
     }
+    public GameObject Bell;
     void Path2()//4,7 vers 4,2
     {
         if(id==2)
@@ -529,12 +530,14 @@ public class PaysanBehavior : MonoBehaviour
                 }
                 if (mytile.PositionX == 4 && mytile.PositionY == 2)
                 {
+                    //Bell.GetComponent<BellSong>().BellSongF();
                     SonneAlerte();
                     return;
                 }
             }
         }
     }
+    
     void Path1()
     {
         if (id==1)
