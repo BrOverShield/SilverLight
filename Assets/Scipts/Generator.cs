@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 //[ExecuteInEditMode]
 public class Generator : MonoBehaviour
@@ -23,6 +24,7 @@ public class Generator : MonoBehaviour
     public guardBehavior[] Guards;
     bool GoalHasBenPlaced = false;
     public GameObject GoalTileEffect;
+    public GameObject GameOverObject;
     public string SceneName;
     void GenerateMap1()
     {
@@ -40,30 +42,18 @@ public class Generator : MonoBehaviour
                 UpdateGo(TI);//Update le tile prefab attribue le ti au go et le go au ti
                 StartLocation(x, y, TI);
                 UpdateGo(TI);
-               
+               if(x==30&&y==3)
+                {
+                    TI.isGoal = true;
+                    Instantiate(GoalTileEffect, new Vector3(x, 0, y), Quaternion.identity);
+                }
             }
         }
         Paysans = FindObjectsOfType<PaysanBehavior>();
         AB.AjouterPrefabs(MapWidth,MapHeight);
         //AB.AjouterPrefabs(MapWidth,MapHeight);
         //killallChildren();
-        while(GoalHasBenPlaced==false)
-        {
-            foreach (TileInfo ti in mapinfo)
-            {
-                if (ti.type != 100 || ti.type != 110 || ti.type != 200 || ti.type != 220)
-                {
-                    int p = Random.Range(0, 1800);
-                    if (p <= 1)
-                    {
-                        ti.isGoal = true;
-                        Instantiate(GoalTileEffect);
-                        GoalHasBenPlaced = true;
-                        break;
-                    }
-                }
-            }
-        }
+        
         
     }
     public void EndTurn()
@@ -98,7 +88,9 @@ public class Generator : MonoBehaviour
     }
     public void GameOver()
     {
-
+        GameOverObject.SetActive(true);
+        Thread.Sleep(5000);
+        SceneManager.LoadScene(this.SceneName);
     }
     public void WinOver()
     {

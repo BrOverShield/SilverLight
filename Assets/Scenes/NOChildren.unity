@@ -1305,7 +1305,8 @@ MonoBehaviour:
   TurnNumber: 0
   Paysans: []
   Guards: []
-  GoalTileEffect: {fileID: 35768623}
+  GoalTileEffect: {fileID: 1173729009188106, guid: dd7c5780b3153334f9ecd50105a73e8d,
+    type: 2}
   SceneName: Credits
 --- !u!4 &679261785
 Transform:
