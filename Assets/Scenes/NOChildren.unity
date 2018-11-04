@@ -617,6 +617,14 @@ MonoBehaviour:
     type: 2}
   RWindowPrefab: {fileID: 1752479673332648, guid: e7ad4ce6602701549bb913f4092dccb5,
     type: 2}
+  BDoorPrefab: {fileID: 1758846690658792, guid: 00d115c990edf844eaef23e21f849599,
+    type: 2}
+  FDoorPrefab: {fileID: 1681915617812516, guid: 2193c00ac47053544a0e66fd916a1b41,
+    type: 2}
+  LDoorPrefab: {fileID: 1431672428712190, guid: 33700f9bc71d16041bf2dfad897e27f7,
+    type: 2}
+  RDoorPrefab: {fileID: 1704106709173754, guid: f977d8459d327754bb0c0fc418d40911,
+    type: 2}
   MapHolder: {fileID: 791994087}
   GM: {fileID: 0}
 --- !u!4 &291998254
