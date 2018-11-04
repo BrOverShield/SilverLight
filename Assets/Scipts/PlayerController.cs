@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
+using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
 
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public int CurentLife = 100;
     int MaxLife = 100;
     int DMG = 11;
+    public Slider HealthSlider;
 	void Start ()
     {
         
@@ -27,17 +29,20 @@ public class PlayerController : MonoBehaviour
         GM = FindObjectOfType<Generator>();
         
     }
-    //Actions
-    //Model De Transitions
-    //Result
+    
     private void Update()
     {
-        if(GM.IsPlayerTurn)
+        if (CurentLife > MaxLife)
         {
+            CurentLife = MaxLife;
+        }
+        if (GM.IsPlayerTurn)
+        {
+            
             Moving();
         }
-        
-        if(CurentLife<=0)
+        HealthSlider.value = CurentLife;
+        if (CurentLife<=0)
         {
             //gameover
             Destroy(this.gameObject);
@@ -91,10 +96,11 @@ public class PlayerController : MonoBehaviour
         {
             TileUpdater Tu = GM.mapTItoGO[LastTile].GetComponent<TileUpdater>();
             Tu.HasPasDansLaNeige = true;
-            
+
             
             Quaternion SnowStepDirection = Quaternion.Euler(0, 90 * Dir, 0);
             GameObject SnowStep = Instantiate(PasDansLaNeige, new Vector3(LastTile.PositionX, 0.02f, LastTile.PositionY), SnowStepDirection,GM.mapTItoGO[LastTile].transform);
+         
             Tu.DirectionDePasDansLaNeige = Dir;
             Tu.SnowStep = SnowStep;
             Tu.HasPasDansLaNeige = true;

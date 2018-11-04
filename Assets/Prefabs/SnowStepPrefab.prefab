@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PasDansLaNeigeTimer: 5
+  tu: {fileID: 0}
 --- !u!212 &212839487329936272
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -117,7 +118,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ef3c9c2933090a24ead29e0326c66fa6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d99cbf3a2a1fc4940a798f921c88d845, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
