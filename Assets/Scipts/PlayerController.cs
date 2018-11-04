@@ -47,45 +47,73 @@ public class PlayerController : MonoBehaviour
             //gameover
             Destroy(this.gameObject);
         }
+        recenterOnTrueTile();
+        recenterOnTrueTileAuto();
     }
     void attack(PaysanBehavior P)
     {
         P.Life -= DMG;
+       
+    }
+    void recenterOnTrueTile()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            foreach (TileInfo ti in GM.mapinfo)
+            {
+                print(ti.PositionX + "," + ti.PositionY + " ; " + GM.mapTItoGO[ti].transform.position.x + "," + GM.mapTItoGO[ti].transform.position.z);
+            }
+            print("Player: " + myPresentTileInfo.PositionX + "," + myPresentTileInfo.PositionY + " ; " + this.transform.position.x + " , " + this.transform.position.z);
+            if(myPresentTileInfo.PositionX!= this.transform.position.x|| myPresentTileInfo.PositionY!= this.transform.position.z)
+            {
+                myPresentTileInfo = GM.mapCootoTI[GM.CootoString((int)this.transform.position.x, (int)this.transform.position.z)];
+            }
+        }
+    }
+    void recenterOnTrueTileAuto()
+    {
+        if (myPresentTileInfo.PositionX != this.transform.position.x || myPresentTileInfo.PositionY != this.transform.position.z)
+        {
+            myPresentTileInfo = GM.mapCootoTI[GM.CootoString((int)this.transform.position.x, (int)this.transform.position.z)];
+        }
     }
     void Moving()
     {
         
         
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             Dir = 3;
+            
             MoveLeft();
             GM.EndTurn();
-            CurentLife++;
+            CurentLife--;
             
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             Dir = 1;
             MoveRight();
-            GM.EndTurn();
-            CurentLife++;
 
-        }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Dir = 4;
-            Moveup();
             GM.EndTurn();
-            CurentLife++;
+            CurentLife--;
 
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
+            Dir = 4;
+            Moveup();
+            GM.EndTurn();
+            CurentLife--;
+
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
             Dir = 2;
+            
             Movedown();
             GM.EndTurn();
-            CurentLife++;
+            CurentLife--;
 
         }
         
@@ -153,7 +181,7 @@ public class PlayerController : MonoBehaviour
         }
         foreach (PaysanBehavior P in GM.Paysans)
         {
-            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
+            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)] == P.mytile)
             {
                 attack(P);
                 return;
@@ -182,7 +210,7 @@ public class PlayerController : MonoBehaviour
         }
         foreach (PaysanBehavior P in GM.Paysans)
         {
-            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
+            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY+1)] == P.mytile)
             {
                 attack(P);
                 return;
@@ -217,7 +245,7 @@ public class PlayerController : MonoBehaviour
         }
         foreach (PaysanBehavior P in GM.Paysans)
         {
-            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
+            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY-1)] == P.mytile)
             {
                 attack(P);
                 return;

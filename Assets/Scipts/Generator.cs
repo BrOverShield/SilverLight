@@ -19,6 +19,7 @@ public class Generator : MonoBehaviour
     public bool IsPlayerTurn = true;
     public int TurnNumber=0;
     public PaysanBehavior[] Paysans;
+    public guardBehavior[] Guards;
     void GenerateMap1()
     {
         MapWidth = Map2D1.width;
@@ -53,6 +54,11 @@ public class Generator : MonoBehaviour
         foreach (PaysanBehavior paysan in Paysans)
         {
             paysan.DoTurn();
+        }
+        Guards = FindObjectsOfType<guardBehavior>();
+        foreach (guardBehavior guard in Guards)
+        {
+            guard.DoTurn();
         }
         Timeout[] Timeouts = FindObjectsOfType<Timeout>();
         foreach (Timeout T in Timeouts)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Timeout : MonoBehaviour
 {
-    int t=5;
+    public int t=5;
     public void DoTurn()
     {
         t--;

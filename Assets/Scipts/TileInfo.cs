@@ -10,6 +10,7 @@ public class TileInfo
     public int Lumiere;
     public int Etage;
     public GameObject myGo;
+    public bool HasBlood = false;
     public TileInfo(int x, int y,Color P,int etage)
     {
         
