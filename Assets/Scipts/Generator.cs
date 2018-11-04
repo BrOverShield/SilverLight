@@ -56,7 +56,7 @@ public class Generator : MonoBehaviour
         {
             paysan.DoTurn();
         }
-        Guards = FindObjectsOfType<guardBehavior>();
+        /*Guards = FindObjectsOfType<guardBehavior>();
         foreach (guardBehavior guard in Guards)
         {
             if(guard.IDontKnowWhereIam)
@@ -64,7 +64,7 @@ public class Generator : MonoBehaviour
                 guard.mytile = mapCootoTI[CootoString(17, 1)];
             }
             guard.DoTurn();
-        }
+        }*/
         Timeout[] Timeouts = FindObjectsOfType<Timeout>();
         foreach (Timeout T in Timeouts)
         {

@@ -23,6 +23,7 @@ public class PaysanBehavior : MonoBehaviour
     public GameObject GuardPrefab;
     public List<GameObject> Guards=new List<GameObject>();
     public guardBehavior[] GuardsBehaviors;
+    bool isactive=false;
    void Start ()
    {
        GM = FindObjectOfType<Generator>();
@@ -57,6 +58,26 @@ public class PaysanBehavior : MonoBehaviour
                     IDontKnowWhereIam = false;
                 }
             }
+            if (id == 3)
+            {
+                if (GM.mapCootoTI.ContainsKey(GM.CootoString(17, 1)))
+                {
+
+                    mytile = GM.mapCootoTI[GM.CootoString(17, 1)];
+                    IDontKnowWhereIam = false;
+                }
+                print("I am spartacus");
+            }
+            if (id == 4)
+            {
+                if (GM.mapCootoTI.ContainsKey(GM.CootoString(16, 1)))
+                {
+
+                    mytile = GM.mapCootoTI[GM.CootoString(16, 1)];
+                    IDontKnowWhereIam = false;
+                }
+                
+            }
         }
        else
        {
@@ -77,9 +98,13 @@ public class PaysanBehavior : MonoBehaviour
         {
             return;
         }
-        Guards[0].transform.position = new Vector3(17f, 0f, 1f);
-        Guards[0].GetComponent<guardBehavior>().IsActive = true;
-        Guards.Remove(Guards[0]);
+        foreach (PaysanBehavior p in GM.Paysans)
+        {
+            if(p.id==3)
+            {
+                p.isactive = true;
+            }
+        }
         HasBencalled = true;
     }
     void Attac()
@@ -217,9 +242,135 @@ public class PaysanBehavior : MonoBehaviour
             }
 
         }
+        
         Path1();
         Path2();
+        if(isactive)
+        {
+            Path3();
+        }
+        
    }
+    void Path3()
+    {
+        if (id==3)
+        {
+            print("I am spartacus 2");
+            //Reverse
+            if (ElReverso)
+            {
+                RevervePath();
+                return;
+            }
+            if (isTRiggerd)//si tu as suivit une piste et la perd
+            {
+                ElReverso = true;
+            }
+            //follow etineraire
+            print("I am spartacus 3");
+            print(mytile.PositionX + "," + mytile.PositionY);
+            if (mytile.PositionX == 17)
+            {
+                print("I am spartacus 4");
+                if (mytile.PositionY < 2)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
+                }
+            }
+            if (mytile.PositionY == 2)
+            {
+                if (mytile.PositionX > 12)
+                {
+
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX - 1, mytile.PositionY);
+
+
+                    return;
+                }
+            }
+            if (mytile.PositionX == 12)
+            {
+                if (mytile.PositionY < 4)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
+                }
+            }
+            if (mytile.PositionY == 4)
+            {
+                if (mytile.PositionX > 10)
+                {
+
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX - 1, mytile.PositionY);
+
+
+                    return;
+                }
+            }
+            if (mytile.PositionX == 10)
+            {
+                if (mytile.PositionY < 7)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY + 1);
+                    return;
+                }
+            }
+            if (mytile.PositionY == 7)
+            {
+                if (mytile.PositionX > 5)
+                {
+
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX - 1, mytile.PositionY);
+
+
+                    return;
+                }
+            }
+            if (mytile.PositionX == 5)
+            {
+                if (mytile.PositionY > 2)
+                {
+                    TalkingTimer = 5;
+                    int[] coo = { mytile.PositionX, mytile.PositionY };
+                    ReversePath.Insert(0, coo);
+                    moveto(mytile.PositionX, mytile.PositionY - 1);
+                    return;
+                }
+            }
+
+
+            if (mytile.PositionY == 5)
+            {
+                if (mytile.PositionX == 2)
+                {
+                    TalkingTimer--;
+                    if (TalkingTimer <= 0)
+                    {
+                        //reverse
+                        ElReverso = true;
+                    }
+
+
+                }
+            }
+        }
+    }
     void Path2()//4,7 vers 4,2
     {
         if(id==2)

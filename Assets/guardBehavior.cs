@@ -61,10 +61,11 @@ public class guardBehavior : MonoBehaviour
             Sound.GetComponentInChildren<TextMesh>().text = "Die WhereWolf";
         }
         player.CurentLife -= DMG;
+        
     }
     void calltheGards()
     {
-        Instantiate(GuardPrefab, new Vector3(17f, 0f, 1f), Quaternion.identity);
+        //Instantiate(GuardPrefab, new Vector3(17f, 0f, 1f), Quaternion.identity);
     }
     List<int[]> ReversePath = new List<int[]>();
     public void DoTurn()
