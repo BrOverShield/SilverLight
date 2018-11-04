@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44658017, g: 0.49641502, b: 0.57482153, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -360,6 +360,14 @@ MonoBehaviour:
     type: 2}
   TreePrefab: {fileID: 1681661906585868, guid: b5b716c474cf3fa48890e2b1cb07774b, type: 2}
   PillarPrefab: {fileID: 1080184123494938, guid: 5ff2984808f2afa4f82a3f13c766917c,
+    type: 2}
+  BWindowPrefab: {fileID: 1377850747420522, guid: 3b673d5b32b44e34c9167d707f09cc93,
+    type: 2}
+  FWindowPrefab: {fileID: 1172518450028576, guid: 3ac11b59046f83d48a4005ec328b82d0,
+    type: 2}
+  LWindowPrefab: {fileID: 1877250783042216, guid: 88fcfa6c3e872104187eded110ba3633,
+    type: 2}
+  RWindowPrefab: {fileID: 1752479673332648, guid: e7ad4ce6602701549bb913f4092dccb5,
     type: 2}
   MapHolder: {fileID: 791994087}
   GM: {fileID: 0}
