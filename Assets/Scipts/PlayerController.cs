@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 using UnityEngine.UI;
+
 public class PlayerController : MonoBehaviour
 {
 
@@ -138,6 +139,22 @@ public class PlayerController : MonoBehaviour
         
 
     }
+    Vector3 from;
+    Vector3 to;
+    public IEnumerable MoveSlowly()
+    {
+        print("Starting");
+        this.transform.position = Vector3.Lerp(from, to, 0.2f);
+        yield return new WaitForSeconds(0.2f);
+        this.transform.position = Vector3.Lerp(from, to, 0.4f);
+        yield return new WaitForSeconds(0.2f);
+        this.transform.position = Vector3.Lerp(from, to, 0.6f);
+        yield return new WaitForSeconds(0.2f);
+        this.transform.position = Vector3.Lerp(from, to, 0.8f);
+        yield return new WaitForSeconds(0.2f);
+        this.transform.position = Vector3.Lerp(from, to, 1f);
+        yield return null;
+    }
     void MoveLeft()
     {
         if(GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY))==false)
@@ -161,6 +178,9 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < 1; i++)
         {
             this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
+
+            
+
 
         }
         LastTile = myPresentTileInfo;
@@ -261,7 +281,7 @@ public class PlayerController : MonoBehaviour
 
     bool Blocking(int type)
     {
-        if (type == 100 || /*type == 120 ||*/ type == 110 || type == 200)
+        if (type == 100 || /*type == 120 ||*/ type == 110 || type == 200||type==220)
         {
             return true;
         }
