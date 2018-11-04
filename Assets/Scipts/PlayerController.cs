@@ -176,6 +176,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        
         foreach (PaysanBehavior P in GM.Paysans)
         {
             if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
