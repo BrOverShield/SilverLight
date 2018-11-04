@@ -8,11 +8,23 @@ public class LowerImage : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		startPosition = transform.position;
+		StartCoroutine(DoFade());
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		transform.position = startPosition - new Vector3(0, 10, 0);
+		
+	}
+
+	IEnumerator DoFade ()
+	{
+		CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+		while (transform.position.y != 0)
+		{
+			//transform.position = startPosition - new Vector3(0, 10, 0);
+			yield return null;
+		}
+		yield return null;
 	}
 }
