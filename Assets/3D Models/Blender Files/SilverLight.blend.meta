@@ -16,6 +16,9 @@ ModelImporter:
     100020: Tile
     100022: Wall_001
     100024: Doorway
+    100026: Bell
+    100028: Bell_Station
+    100030: Bell_Tower
     400000: Corner
     400002: Pillar
     400004: //RootNode
@@ -29,6 +32,9 @@ ModelImporter:
     400020: Tile
     400022: Wall_001
     400024: Doorway
+    400026: Bell
+    400028: Bell_Station
+    400030: Bell_Tower
     2100000: None__Window
     2100002: None__Pillar_001
     2100004: None__Corner
@@ -39,6 +45,8 @@ ModelImporter:
     2100014: None__Tile
     2100016: None__Door
     2100018: None__Doorway
+    2100020: None__Bell_Tower
+    2100022: None__Bell
     2300000: Corner
     2300002: Pillar
     2300004: Wall
@@ -51,6 +59,9 @@ ModelImporter:
     2300018: Tile
     2300020: Wall_001
     2300022: Doorway
+    2300024: Bell
+    2300026: Bell_Station
+    2300028: Bell_Tower
     3300000: Corner
     3300002: Pillar
     3300004: Wall
@@ -63,6 +74,9 @@ ModelImporter:
     3300018: Tile
     3300020: Wall_001
     3300022: Doorway
+    3300024: Bell
+    3300026: Bell_Station
+    3300028: Bell_Tower
     4300000: Window
     4300002: Pillar
     4300004: Corner
@@ -75,6 +89,9 @@ ModelImporter:
     4300018: Regular_Wall
     4300020: Wall_001
     4300022: Doorway
+    4300024: Bell_Station
+    4300026: Bell
+    4300028: Bell_Tower
     7400000: Default Take
     9500000: //RootNode
     2186277476908879412: ImportLogs
