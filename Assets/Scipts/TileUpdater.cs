@@ -87,7 +87,8 @@ public class TileUpdater : MonoBehaviour
         }
         if (ti.type == 220)
         {
-            GetComponentInChildren<MeshRenderer>().material = mats[6];
+            GetComponentInChildren<MeshRenderer>().material = mats[1];
+			this.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(1,4), 0);
         }
         if (StartLocation)
         {
