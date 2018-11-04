@@ -24,8 +24,10 @@ public class PaysanBehavior : MonoBehaviour
     public List<GameObject> Guards=new List<GameObject>();
     public guardBehavior[] GuardsBehaviors;
     bool isactive=false;
+    ActivateSound Sound;
    void Start ()
    {
+        Sound = FindObjectOfType<ActivateSound>();
        GM = FindObjectOfType<Generator>();
         player = FindObjectOfType<PlayerController>();
         GuardsBehaviors = FindObjectsOfType<guardBehavior>();
@@ -100,6 +102,7 @@ public class PaysanBehavior : MonoBehaviour
        }
        if(Life<=0)
         {
+            Sound.PlayDeathSound();
             player.CurentLife += 80;
             Instantiate(Blood, this.transform.position, Quaternion.identity);
             mytile.HasBlood = true;
@@ -124,6 +127,7 @@ public class PaysanBehavior : MonoBehaviour
     }
     void Attac()
     {
+        Sound.PlayPaysanAttackSound();
         if(Random.Range(1,10)<30)
         {
            GameObject Sound = Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
@@ -133,8 +137,25 @@ public class PaysanBehavior : MonoBehaviour
     }
     void SonneAlerte()
     {
+        Sound.PlayClocheSound();
         Instantiate(SonDeClocheAlertePrefab, this.transform.position, Quaternion.identity);
         calltheGards();
+    }
+    void CuriusMaybe()
+    {
+        int t =Random.Range(1, 4);
+        if(t==1)
+        {
+            Sound.PlayPaysanCuriousSound1();
+        }
+        if (t == 2)
+        {
+            Sound.PlayPaysanCuriousSound2();
+        }
+        if (t == 3)
+        {
+            Sound.PlayPaysanCuriousSound3();
+        }
     }
     List<int[]> ReversePath = new List<int[]>();
    public void DoTurn()
@@ -157,6 +178,7 @@ public class PaysanBehavior : MonoBehaviour
                 int[] coo = { mytile.PositionX, mytile.PositionY - 1 };//vas vers ca
                 ReversePath.Insert(0, coo);
                 moveto(mytile.PositionX, mytile.PositionY-1);
+                CuriusMaybe();
                 return;
             }
             if (ti.HasBlood)
@@ -186,6 +208,7 @@ public class PaysanBehavior : MonoBehaviour
                 int[] coo = { mytile.PositionX, mytile.PositionY + 1 };//vas vers ca
                 ReversePath.Insert(0, coo);
                 moveto(mytile.PositionX, mytile.PositionY + 1);
+                CuriusMaybe();
                 return;
             }
             if (ti.HasBlood)
@@ -216,6 +239,7 @@ public class PaysanBehavior : MonoBehaviour
                 int[] coo = { mytile.PositionX+1, mytile.PositionY };//vas vers ca
                 ReversePath.Insert(0, coo);
                 moveto(mytile.PositionX+1, mytile.PositionY );
+                CuriusMaybe();
                 return;
             }
             if (ti.HasBlood)
@@ -245,6 +269,7 @@ public class PaysanBehavior : MonoBehaviour
                 int[] coo = { mytile.PositionX - 1, mytile.PositionY };//vas vers ca
                 ReversePath.Insert(0, coo);
                 moveto(mytile.PositionX - 1, mytile.PositionY);
+                CuriusMaybe();
                 return;
             }
             if (ti.HasBlood)
@@ -274,6 +299,7 @@ public class PaysanBehavior : MonoBehaviour
                 int[] coo = { mytile.PositionX+1, mytile.PositionY - 1 };//vas vers ca
                 ReversePath.Insert(0, coo);
                 moveto(mytile.PositionX+1, mytile.PositionY - 1);
+                CuriusMaybe();
                 return;
             }
             if (ti.HasBlood)
@@ -303,6 +329,7 @@ public class PaysanBehavior : MonoBehaviour
                 int[] coo = { mytile.PositionX - 1, mytile.PositionY - 1 };//vas vers ca
                 ReversePath.Insert(0, coo);
                 moveto(mytile.PositionX - 1, mytile.PositionY - 1);
+                CuriusMaybe();
                 return;
             }
             if (ti.HasBlood)
@@ -332,6 +359,7 @@ public class PaysanBehavior : MonoBehaviour
                 int[] coo = { mytile.PositionX - 1, mytile.PositionY + 1 };//vas vers ca
                 ReversePath.Insert(0, coo);
                 moveto(mytile.PositionX - 1, mytile.PositionY + 1);
+                CuriusMaybe();
                 return;
             }
             if (ti.HasBlood)
@@ -361,6 +389,7 @@ public class PaysanBehavior : MonoBehaviour
                 int[] coo = { mytile.PositionX + 1, mytile.PositionY + 1 };//vas vers ca
                 ReversePath.Insert(0, coo);
                 moveto(mytile.PositionX + 1, mytile.PositionY + 1);
+                CuriusMaybe();
                 return;
             }
             if (ti.HasBlood)

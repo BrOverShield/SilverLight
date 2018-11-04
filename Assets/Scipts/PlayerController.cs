@@ -23,16 +23,18 @@ public class PlayerController : MonoBehaviour
     int MaxLife = 100;
     int DMG = 11;
     public Slider HealthSlider;
+    ActivateSound As;
 	void Start ()
     {
         
         
         GM = FindObjectOfType<Generator>();
-        
+        As = FindObjectOfType<ActivateSound>();
     }
     
     private void Update()
     {
+        
         if (CurentLife > MaxLife)
         {
             CurentLife = MaxLife;
@@ -119,10 +121,19 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+    void maybePlaySoundGarou()
+    {
+       int p = Random.Range(0, 10);
+        if(p<=2)
+        {
+            As.PlayChatGarouSound();
+        }
+    }
     void SnowStep()
     {
         if(LastTile.type==60)
         {
+            As.PlayCrounchSound();
             TileUpdater Tu = GM.mapTItoGO[LastTile].GetComponent<TileUpdater>();
             Tu.HasPasDansLaNeige = true;
 
