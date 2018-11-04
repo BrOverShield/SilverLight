@@ -12,6 +12,11 @@ public class TileUpdater : MonoBehaviour
     PlayerController player;
     public bool StartLocation = false;
     Generator GM;
+    public Material PasDansLaNeigeMat;
+    public bool HasPasDansLaNeige;
+    public int PasDansLaNeigeTimer=5;
+    GameObject PasDansLaNeige;
+    public int DirectionDePasDansLaNeige = 0;
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
@@ -21,7 +26,7 @@ public class TileUpdater : MonoBehaviour
 
     void Update()
     {
-
+        
     }
     private void OnMouseOver()
     {
@@ -40,7 +45,16 @@ public class TileUpdater : MonoBehaviour
         
     }
     
+    public void UpdateMeCurrent()
+    {
+        if (HasPasDansLaNeige) 
+        {
 
+            Instantiate(PasDansLaNeige, new Vector3(myInfo.PositionX, 0.2f, myInfo.PositionY), Quaternion.identity);
+
+
+        }
+    }
     public void UpdateMe(TileInfo ti)
     {
         this.transform.position = new Vector3(ti.PositionX, 0, ti.PositionY);

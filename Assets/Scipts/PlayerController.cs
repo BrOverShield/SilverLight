@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     TileInfo LastTile;
     //GameObject myPresentTile;
     public TileInfo myPresentTileInfo;
-
+    int Dir;
     public int Porte = 5;
     
 
@@ -38,22 +38,44 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             MoveLeft();
+            GM.TurnNumber++;
+            Dir = 4;
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             MoveRight();
+            GM.TurnNumber++;
+            Dir = 2;
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Moveup();
+            GM.TurnNumber++;
+            Dir = 1;
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             Movedown();
+            GM.TurnNumber++;
+            Dir = 3;
         }
         
     }
+    void SnowStep()
+    {
+        if(LastTile.type==60)
+        {
+            TileUpdater Tu = GM.mapTItoGO[LastTile].GetComponent<TileUpdater>();
+            Tu.HasPasDansLaNeige = true;
+            
+            Tu.PasDansLaNeigeTimer = 6;
+            Tu.UpdateMeCurrent();
+            Tu.DirectionDePasDansLaNeige = Dir;
 
+        }
+        
+
+    }
     void MoveLeft()
     {
         if(GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY))==false)
