@@ -41,12 +41,13 @@ public class Generator : MonoBehaviour
                 
                 UpdateGo(TI);//Update le tile prefab attribue le ti au go et le go au ti
                 StartLocation(x, y, TI);
-                UpdateGo(TI);
+                
                if(x==30&&y==3)
                 {
                     TI.isGoal = true;
                     Instantiate(GoalTileEffect, new Vector3(x, 0, y), Quaternion.identity);
                 }
+                UpdateGo(TI);
             }
         }
         Paysans = FindObjectsOfType<PaysanBehavior>();
@@ -88,12 +89,13 @@ public class Generator : MonoBehaviour
     }
     public void GameOver()
     {
-        GameOverObject.SetActive(true);
-        Thread.Sleep(5000);
+        //GameOverObject.SetActive(true);
+        //Thread.Sleep(5000);
         SceneManager.LoadScene(this.SceneName);
     }
     public void WinOver()
     {
+        print("WinOver");
         SceneManager.LoadScene( SceneName );
     }
     void killallChildren()

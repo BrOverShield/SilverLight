@@ -44,11 +44,13 @@ public class PlayerController : MonoBehaviour
         {
             
             Moving();
+            WinTest();
         }
         HealthSlider.value = CurentLife;
         if (CurentLife<=0)
         {
             //gameover
+            
             GM.GameOver();
            
         }
@@ -59,6 +61,7 @@ public class PlayerController : MonoBehaviour
     {
         if (this.myPresentTileInfo.isGoal)
         {
+            print("Player has won");
             GM.WinOver();
         }
     }
