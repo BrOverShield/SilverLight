@@ -49,7 +49,7 @@ public class NewGenerator : MonoBehaviour
 
     public void UpdateVisual(TileInfo ti)
     {
-        
+        ti.MyVisual.GetComponentInChildren<TextMesh>().text = ti.R256.ToString();
         if(ti.R256>60)
         {
             ti.MyVisual.GetComponentInChildren<MeshRenderer>().material = mats[0];
@@ -61,6 +61,10 @@ public class NewGenerator : MonoBehaviour
         if (ti.R256 < 60)
         {
             ti.MyVisual.GetComponentInChildren<MeshRenderer>().material = mats[2];
+        }
+        if(ti.R256==220)
+        {
+            ti.MyVisual.GetComponentInChildren<MeshRenderer>().material = mats[1];
         }
 
     }
