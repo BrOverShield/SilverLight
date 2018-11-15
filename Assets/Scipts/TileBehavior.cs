@@ -12,7 +12,7 @@ public class TileBehavior : MonoBehaviour
     private void OnMouseDown()
     {
         Player.TileClicked = this.gameObject;
-        Player.Clicked();
+        Player.ClickControl();
         
     }
 }
