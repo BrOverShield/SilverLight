@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Procedural.Carre;
-
+using TurnManaging;
 public class NewGenerator : MonoBehaviour
 {
     public static MapGenerator GM;
@@ -10,8 +10,11 @@ public class NewGenerator : MonoBehaviour
     public GameObject TilePrefab;
     public Transform MapHolderTransform;
     public Material[] mats;
+    public static TurnManager TM;
+    
 	void Start ()
     {
+        TM = new TurnManager();
         GM = new MapGenerator(TilePrefab,MapHolderTransform);
         GM.AfterGeneration = AddPrebabs;
         GM.VisualUpdate = UpdateVisual;
@@ -49,7 +52,7 @@ public class NewGenerator : MonoBehaviour
 
     public void UpdateVisual(TileInfo ti)
     {
-        ti.MyVisual.GetComponentInChildren<TextMesh>().text = ti.R256.ToString();
+        //ti.MyVisual.GetComponentInChildren<TextMesh>().text = ti.R256.ToString();
         if(ti.R256>60)
         {
             ti.MyVisual.GetComponentInChildren<MeshRenderer>().material = mats[0];

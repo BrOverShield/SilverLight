@@ -73,6 +73,7 @@ namespace Procedural.Carre
     }
     public class MapGenerator : MonoBehaviour
     {
+        
         public int MapWidth;
         public int MapHeight;
         public Texture2D Map2D;
