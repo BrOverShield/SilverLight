@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     Pathfinding PF;
     int coox=0;
     int cooy=0;
-    public bool DoTurn = false;
+    public bool DoingTurn = false;
     int clicCount=0;
     public Material[] DistanceColor = new Material[3];
     void Start ()
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
                  
         
-		if(DoTurn)
+		if(DoingTurn)
         {
             DoMoves();
         }
@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Clicked = OnMove;
+            Clicked = OnClickTwice;
             clicCount = 0;
         }
         Clicked();
@@ -146,12 +146,12 @@ public class PlayerController : MonoBehaviour
     }
     List<Action> Path = new List<Action>();
     bool StartMoves = false;
-    public void OnMove()//Appeler quand on clic sur move ou appui sur f1
+    public void OnClickTwice()//Appeler quand on clic deux fois
     {
         if(NewGenerator.TM.IsPlayerTurn)
         {
  
-            DoTurn = true;//active le update
+            DoingTurn = true;//active le update
             NewGenerator.TM.IsPlayerTurn = false;
             StartMoves = true;//s<execute une fois au debut de la fonction DoMoves
         }
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            DoTurn = false;
+            DoingTurn = false;
             NewGenerator.TM.IsPlayerTurn = true;
         }
     }
