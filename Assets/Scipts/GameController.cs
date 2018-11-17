@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
 	}
     public void UpdateVisual(TileInfo ti)
     {
-        ti.MyVisual.GetComponentInChildren<TextMesh>().text = ti.R256.ToString();
+        
         ti.MyVisual.GetComponentInChildren<MeshRenderer>().material = mats[0];
         
     }
