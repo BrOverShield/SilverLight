@@ -71,7 +71,8 @@ namespace IA.PathFinding.mapCarre
     public class Pathfinding
     {
         public bool AllowDiagonal=false;
-        
+        public bool AllowUpAndDown = false;
+
         List<Action> solution=new List<Action>();
         List<Node> frontier=new List<Node>();
         List<Node> explored=new List<Node>();
@@ -111,28 +112,48 @@ namespace IA.PathFinding.mapCarre
         {
             List<Action> myActions=new List<Action>();
 
-            Action up = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy + 1),0);//up
+            Action up = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy + 1,s.mytile.CooH),0);//up
             myActions.Add(up);
-            Action down = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy - 1),2);//down
+            Action down = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy - 1, s.mytile.CooH),2);//down
             myActions.Add(down);
-            Action left = new Action(s.mytile, GM.FindTile(s.mytile.Coox-1, s.mytile.Cooy),3);//left
+            Action left = new Action(s.mytile, GM.FindTile(s.mytile.Coox-1, s.mytile.Cooy, s.mytile.CooH),3);//left
             myActions.Add(left);
-            Action right = new Action(s.mytile, GM.FindTile(s.mytile.Coox+1, s.mytile.Cooy),1);//right
+            Action right = new Action(s.mytile, GM.FindTile(s.mytile.Coox+1, s.mytile.Cooy, s.mytile.CooH),1);//right
             myActions.Add(right);
             if(AllowDiagonal)
             {
-                Action upLeft = new Action(s.mytile,GM.FindTile(s.mytile.Coox-1, s.mytile.Cooy + 1));//up left
+                Action upLeft = new Action(s.mytile,GM.FindTile(s.mytile.Coox-1, s.mytile.Cooy + 1, s.mytile.CooH));//up left
                 upLeft.isDiagonal = true;
                 myActions.Add(upLeft);
-                Action upRight = new Action(s.mytile, GM.FindTile(s.mytile.Coox+1, s.mytile.Cooy + 1));//up right
+                Action upRight = new Action(s.mytile, GM.FindTile(s.mytile.Coox+1, s.mytile.Cooy + 1, s.mytile.CooH));//up right
                 upRight.isDiagonal = true;
                 myActions.Add(upRight);
-                Action DownLeft = new Action(s.mytile, GM.FindTile(s.mytile.Coox-1, s.mytile.Cooy - 1));//down left
+                Action DownLeft = new Action(s.mytile, GM.FindTile(s.mytile.Coox-1, s.mytile.Cooy - 1, s.mytile.CooH));//down left
                 DownLeft.isDiagonal = true;
                 myActions.Add(DownLeft);
-                Action DownRight = new Action(s.mytile, GM.FindTile(s.mytile.Coox+1, s.mytile.Cooy - 1));//down right
+                Action DownRight = new Action(s.mytile, GM.FindTile(s.mytile.Coox+1, s.mytile.Cooy - 1, s.mytile.CooH));//down right
                 DownRight.isDiagonal = true;
                 myActions.Add(DownRight);
+            }
+            if(AllowUpAndDown)
+            {
+                Action upUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy + 1,s.mytile.CooH+1), 0);//up
+                myActions.Add(upUp);
+                Action downUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy - 1, s.mytile.CooH + 1), 2);//down
+                myActions.Add(downUp);
+                Action leftUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox - 1, s.mytile.Cooy, s.mytile.CooH + 1), 3);//left
+                myActions.Add(leftUp);
+                Action rightUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox + 1, s.mytile.Cooy, s.mytile.CooH + 1), 1);//right
+                myActions.Add(rightUp);
+
+                Action upDown = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy + 1, s.mytile.CooH - 1), 0);//up
+                myActions.Add(upDown);
+                Action downDown = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy - 1, s.mytile.CooH - 1), 2);//down
+                myActions.Add(downDown);
+                Action leftDown = new Action(s.mytile, GM.FindTile(s.mytile.Coox - 1, s.mytile.Cooy, s.mytile.CooH - 1), 3);//left
+                myActions.Add(leftDown);
+                Action rightDown = new Action(s.mytile, GM.FindTile(s.mytile.Coox + 1, s.mytile.Cooy, s.mytile.CooH - 1), 1);//right
+                myActions.Add(rightDown);
             }
             
             List<Action> illigalsActions = new List<Action>();
@@ -200,7 +221,7 @@ namespace IA.PathFinding.mapCarre
             if(a!=null&&a.To!=null)
             {
                 
-                if (GM.mapCootoTI.ContainsKey(GM.CootoString(a.To.Coox, a.To.Cooy)))
+                if (GM.mapCootoTI.ContainsKey(GM.CootoString(a.To.Coox, a.To.Cooy,a.To.CooH)))
                 {
                     return true;
                 }
@@ -270,7 +291,7 @@ namespace IA.PathFinding.mapCarre
         public bool GoalTest(Procedural.Carre.TileInfo myTile, Procedural.Carre.TileInfo GoalTile)//Calcul si on est rendu a destination
         {
             //return true si on a trouve le goal
-            if(myTile.Coox==GoalTile.Coox&&myTile.Cooy==GoalTile.Cooy)
+            if(myTile.Coox==GoalTile.Coox&&myTile.Cooy==GoalTile.Cooy&& myTile.CooH == GoalTile.CooH)
             {
                 return true;
             }
@@ -284,14 +305,14 @@ namespace IA.PathFinding.mapCarre
             
             foreach (Node N in frontier)
             {
-                if(test.state.mytile.Coox==N.state.mytile.Coox&& test.state.mytile.Cooy == N.state.mytile.Cooy)
+                if(test.state.mytile.Coox==N.state.mytile.Coox&& test.state.mytile.Cooy == N.state.mytile.Cooy && test.state.mytile.CooH == N.state.mytile.CooH)
                 {
                     return true;
                 }
             }
             foreach (Node N in explored)
             {
-                if (test.state.mytile.Coox == N.state.mytile.Coox && test.state.mytile.Cooy == N.state.mytile.Cooy)
+                if (test.state.mytile.Coox == N.state.mytile.Coox && test.state.mytile.Cooy == N.state.mytile.Cooy && test.state.mytile.CooH == N.state.mytile.CooH)
                 {
                     return true;
                 }
@@ -436,7 +457,7 @@ namespace IA.PathFinding.mapCarre
                 Node StarNode=null;
                 foreach (Node n in frontier)
                 {
-                    float D = Vector2.Distance(new Vector2(n.state.mytile.Coox, n.state.mytile.Cooy), new Vector2(to.Coox, to.Cooy));
+                    float D = Vector3.Distance(new Vector3(n.state.mytile.Coox, n.state.mytile.Cooy,n.state.mytile.CooH), new Vector3(to.Coox, to.Cooy,to.CooH));
                     if (D<Score)
                     {
                         Score = D;

@@ -18,11 +18,12 @@ public class PlayerController : MonoBehaviour
     public GameObject OverlayTiles;
     public Camera[] Cams;
     public GameObject[] Terrains;
+    public GameObject[] Overlays;
     int HeightView = 0;
     public delegate void Onclick();
     public Onclick Clicked;
     Pathfinding PF;
-    int coox=30;
+    int coox=23;
     int cooy=2;
     public bool DoingTurn = false;
     int clicCount=0;
@@ -42,12 +43,13 @@ public class PlayerController : MonoBehaviour
             
             if(GameController.GM!=null)
             {
-                MyTile = GameController.GM.mapTItoGO[GameController.GM.FindTile(coox, cooy)];
+                MyTile = GameController.GM.mapTItoGO[GameController.GM.FindTile(coox, cooy,0)];
                 PF = new Pathfinding(GameController.GM);
                 PF.Legal = IllegalesMoves;
                 Clicked = PathFinder;
                 Clicked += ClickCounter;
-                
+                PF.AllowUpAndDown = true;
+                PF.TimeOut = 10000;
             }
             
         }
@@ -69,21 +71,24 @@ public class PlayerController : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.PageUp))
         {
+            
             HeightView++;
             if(HeightView>2)
             {
                 HeightView = 2;
             }
             
-                Terrains[HeightView].SetActive(true);
             
             
+            Terrains[HeightView].SetActive(true);
+           
         }
         if (Input.GetKeyDown(KeyCode.PageDown))
         {
             if(HeightView!=0)
             {
                 Terrains[HeightView].SetActive(false);
+                
             }
             
             HeightView--;
@@ -91,6 +96,7 @@ public class PlayerController : MonoBehaviour
             {
                 HeightView = 0;
             }
+            
         }
         if (DoingTurn)
         {
@@ -172,16 +178,62 @@ public class PlayerController : MonoBehaviour
         //return true si l<action est legal
         if (a != null && a.To != null)
         {
-            if(a.To.R256>200&&a.To.G256<100&&a.To.B<100)
+            if(a.To.R256==255&&a.To.G256==0&&a.To.B256==0)
             {
                 
                 return false;
                 
             }
-            else
+            if(a.To.CooH!=a.From.CooH)
             {
-                return true;
+                if (a.To.CooH == a.From.CooH + 1)//Monte de 1 etage
+                {
+                    if (a.From.G256 == 60 && a.From.R256 == 0 && a.From.B256 == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (a.To.CooH == a.From.CooH + 2)//Monte de 2 etage
+                {
+                    if (a.From.G256 == 70 && a.From.R256 == 0 && a.From.B256 == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                if (a.To.CooH == a.From.CooH -1)//Descend de 1 etage
+                {
+                    if (a.From.G256 == 10 && a.From.R256 == 0 && a.From.B256 == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (a.To.CooH == a.From.CooH - 2)//Descend de 2 etage
+                {
+                    if (a.From.G256 == 20 && a.From.R256 == 0 && a.From.B256 == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
+            
+            return true;
         }
         else
         {
@@ -259,7 +311,11 @@ public class PlayerController : MonoBehaviour
         //Actions remaning?
         if(StartMoves)
         {
-            OverlayTiles.SetActive(false);
+            foreach (GameObject overlay in Overlays)
+            {
+                overlay.SetActive(false);
+            }
+            
             UnitViewMode();
             Frac = 0;//timer du lerp
             foreach (TileInfo ti in GameController.GM.mapinfo)
@@ -280,7 +336,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            OverlayTiles.SetActive(true);
+            foreach (GameObject overlay in Overlays)
+            {
+                overlay.SetActive(true);
+            }
             MainViewMode();
             DoingTurn = false;
             GameController.TM.IsPlayerTurn = true;
@@ -295,8 +354,8 @@ public class PlayerController : MonoBehaviour
         if(a.isAttack==false)
         {
             Frac += Time.deltaTime / 2;
-            Vector3 Start = new Vector3(a.From.Coox, 0, a.From.Cooy);
-            Vector3 end = new Vector3(a.To.Coox, 0, a.To.Cooy);
+            Vector3 Start = new Vector3(a.From.Coox, a.From.Height, a.From.Cooy);
+            Vector3 end = new Vector3(a.To.Coox, a.To.Height, a.To.Cooy);
             this.transform.position = Vector3.Lerp(Start, end, Frac);
             this.transform.rotation = Quaternion.Lerp(this.transform.rotation,Quaternion.Euler(new Vector3(0, 90 * a.Direction, 0)), Frac);
             this.MyTile = GameController.GM.mapTItoGO[a.To];
