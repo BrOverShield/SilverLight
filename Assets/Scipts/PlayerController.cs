@@ -1,778 +1,276 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading;
-using UnityEngine.UI;
-
+using IA.PathFinding.mapCarre;
+using Procedural.Carre;
 public class PlayerController : MonoBehaviour
 {
+    /* clic gauche pour choisir notre destination, ca nous indique le chemin
+     * clic droit pour se deplacer,
+     * quand on se deplace, la camera change pour nous montrer l<animation de deplacement
+     * quand on a fini de se deplacer, la camera zoom out
+     * on peut appuyer sur espace pour passer un tour sur place*/
+    // Use this for initialization
 
-    //controle du joueur
-    //on clic sur une thuile et tu fait un pathfinding pour t<y rendre
-    Generator GM;
     public GameObject TileClicked;
-    public TileInfo tiClicked;
-    TileInfo LastTile;
-    //GameObject myPresentTile;
-    public TileInfo myPresentTileInfo;
-    int Dir;
-    public GameObject PasDansLaNeige;
-    public int Porte = 5;
-    public GameObject PasPas;
-    public int CurentLife = 100;
-    int MaxLife = 100;
-    int DMG = 11;
-    public Slider HealthSlider;
-    ActivateSound As;
-    public Sprite[] MySprites;
-	void Start ()
-    {
-        
-        
-        GM = FindObjectOfType<Generator>();
-        As = FindObjectOfType<ActivateSound>();
-    }
+    public GameObject LastTileClicked;
+    public GameObject MyTile;
+    public GameObject OverlayTiles;
+    public Camera[] Cams;
     
-    private void Update()
+    public delegate void Onclick();
+    public Onclick Clicked;
+    Pathfinding PF;
+    int coox=23;
+    int cooy=2;
+    public bool DoingTurn = false;
+    int clicCount=0;
+    public Material[] DistanceColor = new Material[3];
+    void Start ()
     {
         
-        if (CurentLife > MaxLife)
-        {
-            CurentLife = MaxLife;
-        }
-        if (GM.IsPlayerTurn)
-        {
-            
-            Moving();
-            WinTest();
-        }
-        HealthSlider.value = CurentLife;
-        if (CurentLife<=0)
-        {
-            //gameover
-            
-            GM.GameOver();
-           
-        }
-        recenterOnTrueTile();
-        recenterOnTrueTileAuto();
-    }
-    void WinTest()
-    {
-        if (this.myPresentTileInfo.isGoal)
-        {
-            print("Player has won");
-            GM.WinOver();
-        }
-    }
-    void attack(PaysanBehavior P)
-    {
-        this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[5];
-        P.Life -= DMG;
-       
-    }
-    void recenterOnTrueTile()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            foreach (TileInfo ti in GM.mapinfo)
-            {
-                print(ti.PositionX + "," + ti.PositionY + " ; " + GM.mapTItoGO[ti].transform.position.x + "," + GM.mapTItoGO[ti].transform.position.z);
-            }
-            print("Player: " + myPresentTileInfo.PositionX + "," + myPresentTileInfo.PositionY + " ; " + this.transform.position.x + " , " + this.transform.position.z);
-            if(myPresentTileInfo.PositionX!= this.transform.position.x|| myPresentTileInfo.PositionY!= this.transform.position.z)
-            {
-                myPresentTileInfo = GM.mapCootoTI[GM.CootoString((int)this.transform.position.x, (int)this.transform.position.z)];
-            }
-        }
-    }
-    void recenterOnTrueTileAuto()
-    {
-        if (myPresentTileInfo.PositionX != this.transform.position.x || myPresentTileInfo.PositionY != this.transform.position.z)
-        {
-            myPresentTileInfo = GM.mapCootoTI[GM.CootoString((int)this.transform.position.x, (int)this.transform.position.z)];
-        }
-    }
-    void Moving()
-    {
-        
-        
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            Dir = 3;
-            
-            MoveLeft();
-            this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[3];
-            GM.EndTurn();
-            CurentLife--;
-            
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Dir = 1;
-            MoveRight();
-            this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[1];
-            GM.EndTurn();
-            CurentLife--;
-
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Dir = 4;
-            Moveup();
-            GM.EndTurn();
-            CurentLife--;
-            this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[4];
-        }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Dir = 2;
-            
-            Movedown();
-            GM.EndTurn();
-            CurentLife--;
-            this.GetComponentInChildren<SpriteRenderer>().sprite = MySprites[2];
-        }
-        
-    }
-    void maybePlaySoundGarou()
-    {
-       int p = Random.Range(0, 10);
-        if(p<=2)
-        {
-            As.PlayChatGarouSound();
-        }
-    }
-    void SnowStep()
-    {
-        if(LastTile.type==60)
-        {
-            As.PlayCrounchSound();
-            TileUpdater Tu = GM.mapTItoGO[LastTile].GetComponent<TileUpdater>();
-            Tu.HasPasDansLaNeige = true;
-
-            
-            Quaternion SnowStepDirection = Quaternion.Euler(0, 90 * Dir, 0);
-            GameObject SnowStep = Instantiate(PasDansLaNeige, new Vector3(LastTile.PositionX, 0.02f, LastTile.PositionY), SnowStepDirection,GM.mapTItoGO[LastTile].transform);
-         
-            Tu.DirectionDePasDansLaNeige = Dir;
-            Tu.SnowStep = SnowStep;
-            Tu.HasPasDansLaNeige = true;
-            SnowStep.GetComponent<SnowStepFade>().tu = Tu;
-            //SnowStep.GetComponent<SnowStepFade>().PasDansLaNeigeTimer = 5;
-        }
-        
 
     }
-    Vector3 from;
-    Vector3 to;
-    public IEnumerable MoveSlowly()
-    {
-        print("Starting");
-        this.transform.position = Vector3.Lerp(from, to, 0.2f);
-        yield return new WaitForSeconds(0.2f);
-        this.transform.position = Vector3.Lerp(from, to, 0.4f);
-        yield return new WaitForSeconds(0.2f);
-        this.transform.position = Vector3.Lerp(from, to, 0.6f);
-        yield return new WaitForSeconds(0.2f);
-        this.transform.position = Vector3.Lerp(from, to, 0.8f);
-        yield return new WaitForSeconds(0.2f);
-        this.transform.position = Vector3.Lerp(from, to, 1f);
-        yield return null;
-    }
-    void MoveLeft()
-    {
-        if(GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY))==false)
-        {
-            return;
-        }
-        if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)].type))
-        {
-            return;
-        }
-        
-        foreach (PaysanBehavior P in GM.Paysans)
-        {
-            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)] == P.mytile)
-            {
-                attack(P);
-                return;
-            }
-        }
-        Vector3 Myposition = this.transform.position;
-        Vector3 Destination = this.transform.position + new Vector3(-1, 0, 0);
-        for (int i = 0; i < 1; i++)
-        {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
-
-            
-
-
-        }
-        LastTile = myPresentTileInfo;
-        SnowStep();
-        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)];
-        GM.IsPlayerTurn = false;
-
-    }
-    void MoveRight()
-    {
-        if (GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)) == false)
-        {
-            return;
-        }
-        if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)].type))
-        {
-            return;
-        }
-        foreach (PaysanBehavior P in GM.Paysans)
-        {
-            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)] == P.mytile)
-            {
-                attack(P);
-                return;
-            }
-        }
-        Vector3 Myposition = this.transform.position;
-        Vector3 Destination = this.transform.position + new Vector3(+1, 0, 0);
-        for (int i = 0; i < 1; i++)
-        {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
-        }
-        LastTile = myPresentTileInfo;
-        SnowStep();
-        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)];
-        GM.IsPlayerTurn = false;
-    }
-    void Moveup()
-    {
-        if (GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY+1)) == false)
-        {
-            return;
-        }
-        if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY+1)].type))
-        {
-            return;
-        }
-        foreach (PaysanBehavior P in GM.Paysans)
-        {
-            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY+1)] == P.mytile)
-            {
-                attack(P);
-                return;
-            }
-        }
-        Vector3 Myposition = this.transform.position;
-        Vector3 Destination = this.transform.position + new Vector3(0, 0, 1);
-        for (int i = 0; i < 1; i++)
-        {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
-        }
-        LastTile = myPresentTileInfo;
-        SnowStep();
-        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY + 1)];
-        GM.IsPlayerTurn = false;
-    }
-    void Movedown()
-    {
-        if (GM.mapCootoTI.ContainsKey(GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY-1)) == false)
-        {
-            return;
-        }
-        if (Blocking(GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY-1)].type))
-        {
-            return;
-        }
-        Vector3 Myposition = this.transform.position;
-        Vector3 Destination = this.transform.position + new Vector3(0, 0, -1);
-        for (int i = 0; i < 1; i++)
-        {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 1f);
-        }
-        foreach (PaysanBehavior P in GM.Paysans)
-        {
-            if (GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY-1)] == P.mytile)
-            {
-                attack(P);
-                return;
-            }
-        }
-        LastTile = myPresentTileInfo;
-        SnowStep();
-        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY - 1)];
-        GM.IsPlayerTurn = false;
-    }
-
-
-
-    bool Blocking(int type)
-    {
-        if (type == 100 || /*type == 120 ||*/ type == 110 || type == 200||type==220)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-
-    
-
-    /*private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.GetComponent<TileInfo>()!=null)
-        {
-            if (Blocking(other.gameObject.GetComponent<TileInfo>().type))
-            {
-                isMoving = false;
-            }
-        }
-    }
-    bool isMoving = false;
-    float T=0;
+   
+	// Update is called once per frame
 	void Update ()
     {
-        if(isMoving)
-        {
-            this.transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(tiClicked.PositionX, 0.5f, tiClicked.PositionY), 0.2f);
-            T += Time.deltaTime;
-            
-        }
-        if(T>5)
+
+        if(MyTile==null)
         {
             
-            isMoving = false;
+            if(GameController.GM!=null)
+            {
+                MyTile = GameController.GM.mapTItoGO[GameController.GM.FindTile(coox, cooy)];
+                PF = new Pathfinding(GameController.GM);
+                PF.Legal = IllegalesMoves;
+                Clicked = PathFinder;
+                Clicked += ClickCounter;
+                
+            }
             
         }
-
-    }
-    public void MoveMan()
-    {
-        if (GM.IsPlayerTurn)
-        {
-
-            if (TileClicked != null)
-            {
-                if (FindIfLegal(tiClicked))
-                {
-                    T = 0;
-                    isMoving = true;
-                    myPresentTileInfo = tiClicked;
-                    TileClicked = null;
-                    GM.IsPlayerTurn = false;
-                    GM.ResetEnemyTurn();
-                }
-            }
-        }
-    }
-    bool FindIfLegal(TileInfo ti)
-    {
-        /* if(DetectBlockingWay(myPresentTileInfo,ti))
-         {
-             return false;
-         }
-         if(Vector2.Distance(new Vector2(this.transform.position.x,this.transform.position.z),new Vector2(ti.PositionX,ti.PositionY))>5)
-         {
-            return false;
-         }
-        if (Vector2.Distance(new Vector2(this.transform.position.x, this.transform.position.z), new Vector2(ti.PositionX, ti.PositionY)) < 5)
-        {
-            if (Blocking(ti.type)==false)
-            {
-                return true;
-            }
-        }
-        if (BlockingWay2(ti))
-        {
-            return false;
-        }
-        if (ti.type==100||ti.type==120||ti.type==110||ti.type==200)
-        {
-            return false;
-        }
-        if(ti.PositionX <= myPresentTileInfo.PositionX + Porte && ti.PositionX >= myPresentTileInfo.PositionX - Porte)
-        {
-            if(ti.PositionY <= myPresentTileInfo.PositionY + Porte && ti.PositionY >= myPresentTileInfo.PositionY - Porte)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-           
-
         
-    }
-    bool BlockingWay2(TileInfo ti)
-    {
-        RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(transform.position,new Vector3(ti.PositionX,0.5f,ti.PositionY), out hit, 5f))
+        if(Input.GetKeyDown(KeyCode.F1))
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-             
-            if(Blocking(GM.mapGOtoTI[hit.collider.gameObject].type))
-            {
-                Debug.Log("Did Hit");
-                return true;
-
-            }
-            else
-            {
-                print(GM.mapGOtoTI[hit.collider.gameObject].type);
-                return false;
-            }
+            ShowHideOverLayTiles();
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            UnitViewMode();
+        }
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            MainViewMode();
+        }
+        if (DoingTurn)
+        {
+            DoMoves();
+        }
+	}
+    
+    void UnitViewMode()
+    {
+        
+        foreach (Camera c in Cams)
+        {
+            c.gameObject.SetActive(false);
             
+        }
+        Cams[1].gameObject.SetActive(true);
+    }
+    void MainViewMode()
+    {
+        foreach (Camera c in Cams)
+        {
+            c.gameObject.SetActive(false);
+
+        }
+        Cams[0].gameObject.SetActive(true);
+    }
+    bool isActive = true;
+    bool OverlayClick = false;
+    public void ShowHideOverLayTiles()
+    {
+        isActive = !isActive;
+        OverlayTiles.SetActive(isActive);
+        clicCount = 0;
+        OverlayClick = true;
+    }
+    void ClickCounter()
+    {
+        if(OverlayClick)
+        {
+            OverlayClick = false;
+            return;
+        }
+        if(LastTileClicked==null)
+        {
+            clicCount++;
+            LastTileClicked = TileClicked;
+            return;
+        }
+        if(TileClicked!=LastTileClicked)
+        {
+            clicCount = 0;
+            LastTileClicked = TileClicked;
+            return;
         }
         else
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-            
-            return false;
+            clicCount++;
+            LastTileClicked = TileClicked;
+            return;
         }
     }
-    bool Blocking(int type)
+    public void ClickControl()
     {
-        if (type == 100 || type == 120 || type == 110 || type == 200)
+        if(clicCount<2)
         {
-            return true;
+            Clicked = PathFinder;
+            Clicked += ClickCounter;
         }
         else
         {
-            return false;
+            Clicked = OnClickTwice;
+            clicCount = 0;
         }
-    }
-    bool DetectBlockingWay(TileInfo Depart,TileInfo Destination)
-    {
-        List<TileInfo> CeQuiSeTrouveEntreLeDepartEtLaDestination=new List<TileInfo>();
-        TileInfo Checking;
-        if(myPresentTileInfo.PositionX<Destination.PositionX)
-        {
-            for (int x = myPresentTileInfo.PositionX; x < Destination.PositionX; x++)
-            {
-                if (myPresentTileInfo.PositionY > Destination.PositionY)
-                {
-                    for (int y = myPresentTileInfo.PositionY; y < Destination.PositionY; y++)
-                    {
-                        Checking = GM.mapCootoTI[GM.CootoString(x, y)];
-                        if(Blocking(Checking.type))
-                        {
-                            return false;
-                        }
-                    }
-                }
-                if (myPresentTileInfo.PositionY < Destination.PositionY)
-                {
-                    for (int y = Destination.PositionY; y < myPresentTileInfo.PositionY; y++)
-                    {
-                        Checking = GM.mapCootoTI[GM.CootoString(x, y)];
-                        if (Blocking(Checking.type))
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-            }
-        }
-        if (myPresentTileInfo.PositionX > Destination.PositionX)
-        {
-            for (int x = Destination.PositionX; x < myPresentTileInfo.PositionX; x++)
-            {
-                if (myPresentTileInfo.PositionY > Destination.PositionY)
-                {
-                    for (int y = myPresentTileInfo.PositionY; y < Destination.PositionY; y++)
-                    {
-                        Checking = GM.mapCootoTI[GM.CootoString(x, y)];
-                        if (Blocking(Checking.type))
-                        {
-                            return false;
-                        }
-                    }
-                }
-                if (myPresentTileInfo.PositionY < Destination.PositionY)
-                {
-                    for (int y = Destination.PositionY; y < myPresentTileInfo.PositionY; y++)
-                    {
-                        Checking = GM.mapCootoTI[GM.CootoString(x, y)];
-                        if (Blocking(Checking.type))
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-
-    }
-
-
-    void MoveLeft()
-    {
-        Vector3 Myposition = this.transform.position;
-        Vector3 Destination = this.transform.position + new Vector3(-1, 0, 0);
-        for (int i = 0; i < 5; i++)    
-        {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination,0.2f);
-            
-        }
-        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX - 1, myPresentTileInfo.PositionY)];
-
-    }
-    void MoveRight()
-    {
-        Vector3 Myposition = this.transform.position;
-        Vector3 Destination = this.transform.position + new Vector3(+1, 0, 0);
-        for (int i = 0; i < 5; i++)
-        {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
-        }
-        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX + 1, myPresentTileInfo.PositionY)];
-    }
-    void Moveup()
-    {
-        Vector3 Myposition = this.transform.position;
-        Vector3 Destination = this.transform.position + new Vector3(0, 0, 1);
-        for (int i = 0; i < 5; i++)
-        {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
-        }
-        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX , myPresentTileInfo.PositionY+1)];
-    }
-    void Movedown()
-    {
-        Vector3 Myposition = this.transform.position;
-        Vector3 Destination = this.transform.position + new Vector3(0, 0, -1);
-        for (int i = 0; i < 5; i++)
-        {
-            this.transform.position = Vector3.MoveTowards(Myposition, Destination, 0.2f);
-        }
-        myPresentTileInfo = GM.mapCootoTI[GM.CootoString(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY-1)];
-    }
-
-
-
-
-
-
-
-
-    /*public void Pathfinding()
-    {
-        float Distance = Vector2.Distance(new Vector2(myPresentTileInfo.PositionX, myPresentTileInfo.PositionY), new Vector2(tiClicked.PositionX, tiClicked.PositionY));
-        if (Distance<=5)
-        {
-            TileInfo[] myneighbors = FindLegalNeighboors();
-            foreach (TileInfo ti in myneighbors)
-            {
-                print(ti.PositionX + "," + ti.PositionY);
-            }
-        }
-    }
-    TileInfo[] FindLegalNeighboors()//Go ou Tile info?
-    {
-        TileInfo mytile = myPresentTileInfo;
-        TileInfo[] Voisins = new TileInfo[4];
-        int x = myPresentTileInfo.PositionX;
-        int y = myPresentTileInfo.PositionY + 1;
-        string coo = GM.CootoString(x, y);
-        if (GM.mapCootoTI.ContainsKey(coo))
-        {
-            Voisins[0] = GM.mapCootoTI[coo];
-        }
-
-        x = myPresentTileInfo.PositionX+1;
-        y = myPresentTileInfo.PositionY;
-        coo = GM.CootoString(x, y);
-        if (GM.mapCootoTI.ContainsKey(coo))
-        {
-            Voisins[1] = GM.mapCootoTI[coo];
-        }
-
-        x = myPresentTileInfo.PositionX;
-        y = myPresentTileInfo.PositionY - 1;
-        coo = GM.CootoString(x, y);
-        if (GM.mapCootoTI.ContainsKey(coo))
-        {
-            Voisins[2] = GM.mapCootoTI[coo];
-        }
-        x = myPresentTileInfo.PositionX-1;
-        y = myPresentTileInfo.PositionY;
-        coo = GM.CootoString(x, y);
-        if (GM.mapCootoTI.ContainsKey(coo))
-        {
-            Voisins[3] = GM.mapCootoTI[coo];
-        }
-
-
-        for (int i = 0; i < Voisins.Length; i++)
-        {
-            if (Voisins[i] != null)
-            {
-
-                if (Voisins[i].type == 100)
-                {
-                    Voisins[i] = null;
-                }
-            }
-
-        }
-        return Voisins;
-
+        Clicked();
     }
     
-    public void PathFinding()
+    bool IllegalesMoves(Action a)
     {
-        int x = 0;
-        print("IN path finding the tile cliked is" + tiClicked.PositionX + "," + tiClicked.PositionY);
-        while(myPresentTileInfo!=tiClicked)
+        //return true si l<action est legal
+        if (a != null && a.To != null)
         {
-            x++;
-            Thread.Sleep(500);
-            TileInfo[] myNeighboors = FindLegalNeighboors();
-
-            TileInfo NextStep = FindBestNeighboor(myNeighboors, tiClicked);
-            //print("MyBestNeighbooris" + NextStep.PositionX +"  "+ NextStep.PositionY);
-            if(NextStep!=null)
+            if (a.To.R256 == 80|| a.To.R256 == 120)
             {
-                print("Movingtonextstep");
-                Moveto(NextStep);
+                return true;
+            }
+            if (a.To.R256 > 60)
+            {
+                return false;
             }
             else
             {
-                print("I have no next Step");
-                break;
-            }
-            if(x>=50)
-            {
-                print("TimeOut" + x);
-                break;
+                return true;
             }
         }
-        print(myPresentTileInfo.PositionX + "," + myPresentTileInfo.PositionY);
-        TileClicked = null;
-        
+        else
+        {
+            return false;
+        }
     }
-    void Moveto(TileInfo ti)
+    void PathFinder()
     {
-        
-        Vector3 myPosition = this.transform.position;
-        Vector3 Destination = new Vector3(ti.PositionX, this.transform.position.y, ti.PositionY);
-        print("Destinationis:" + ti.PositionX + "," + ti.PositionY);
-        int x = 0;
-        print("Moving from" + myPosition.ToString() + " to " + Destination.ToString());
-        while (this.transform.position!=Destination)
+        //Quand on clic sur une thuile, on appel la fonction Astar et on allume les thuile
+        //On indique le nombre de tours pour s<y rendre
+        //seulement si cest le tour du joueur
+        if(GameController.TM.IsPlayerTurn)
         {
-            x++;
-            this.transform.position = Destination;
-            
-            if(x>=5)
+            //Allume toutes les tiles sur le chemin
+            Path.Clear();
+            //List des Actions (from,to)
+            foreach (TileInfo ti in GameController.GM.mapinfo)
             {
-                break;
+                GameController.GM.VisualUpdate(ti);
+                ti.MyVisual.GetComponentInChildren<TextMesh>().text = "";
             }
-        }
-        myPresentTileInfo = ti;
-    }
-    /*TileInfo[] FindLegalNeighboors()//Go ou Tile info?
-    {
-        TileInfo mytile = myPresentTileInfo;
-        TileInfo[] Voisins = new TileInfo[4];
-        int x = myPresentTileInfo.PositionX;
-        int y = myPresentTileInfo.PositionY+1;
-        string coo = GM.CootoString(x, y);
-        if (GM.mapCootoTI.ContainsKey(coo))
-        {
-            Voisins[0] = GM.mapCootoTI[coo];
-        }
-
-        x = myPresentTileInfo.PositionX;
-        y = myPresentTileInfo.PositionY + 1;
-        coo = GM.CootoString(x, y);
-        if (GM.mapCootoTI.ContainsKey(coo))
-        {
-            Voisins[1] = GM.mapCootoTI[coo];
-        }
-
-        x = myPresentTileInfo.PositionX;
-        y = myPresentTileInfo.PositionY + 1;
-        coo = GM.CootoString(x, y);
-        if (GM.mapCootoTI.ContainsKey(coo))
-        {
-            Voisins[2] = GM.mapCootoTI[coo];
-        }
-        x = myPresentTileInfo.PositionX;
-        y = myPresentTileInfo.PositionY + 1;
-        coo = GM.CootoString(x, y);
-        if (GM.mapCootoTI.ContainsKey(coo))
-        {
-            Voisins[3] = GM.mapCootoTI[coo];
-        }
-        
-
-        for (int i = 0; i < Voisins.Length; i++)
-        {
-            if(Voisins[i]!=null)
+            int Distance = 0;
+            foreach (Action a in PF.AStar(GameController.GM.mapGOtoTI[MyTile], GameController.GM.mapGOtoTI[TileClicked]))
             {
-               
-                if (Voisins[i].type == 100)
+                Distance++;
+                if(Distance<=5)
                 {
-                    //Voisins[i] = null;
+                    a.To.MyVisual.GetComponentInChildren<TextMesh>().text = "1";
+                    GameController.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[0];
+                    Path.Add(a);
                 }
-            }
-            
-        }
-        return Voisins;
-
-    }*/
-    /*TileInfo FindBestNeighboor(TileInfo[] Voisins,TileInfo Goal)
-    {
-
-        TileInfo BestNeighboor=null;
-        float GoalDistance = 9999;
-        int x = 0;
-        for (int i = 0; i < Voisins.Length; i++)
-        {
-            x++;
-
-            if(Voisins[i]!=null)
-            {
-
-                float Distance = Vector2.Distance(new Vector2(Voisins[i].PositionX, Voisins[i].PositionY), new Vector2(Voisins[i].PositionX, Voisins[i].PositionY));
-                if (Voisins[i] != null)
+                else if(Distance <= 10)
                 {
-                    if (BestNeighboor == null)
-                    {
-                        GoalDistance = Distance;
-                        BestNeighboor = Voisins[i];
-                    }
-                    else
-                    {
-                        if (Distance < GoalDistance)
-                        {
-                            BestNeighboor = Voisins[i];
-                            GoalDistance = Distance;
-                        }
-
-                    }
+                    a.To.MyVisual.GetComponentInChildren<TextMesh>().text = "2";
+                    GameController.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[1];
+                }
+                else
+                {
+                    a.To.MyVisual.GetComponentInChildren<TextMesh>().text = ((int)(Distance+0.5f/5)).ToString();
+                    GameController.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[2];
                 }
                 
             }
-            else
-            {
-                print("Mon voisin " + i + " est null");
-            }
             
         }
-        return BestNeighboor;
-    }*/
 
+    }
+    List<Action> Path = new List<Action>();
+    bool StartMoves = false;
+    public void OnClickTwice()//Appeler quand on clic deux fois
+    {
+        if(GameController.TM.IsPlayerTurn)
+        {
+ 
+            DoingTurn = true;//active le update
+            GameController.TM.IsPlayerTurn = false;
+            StartMoves = true;//s<execute une fois au debut de la fonction DoMoves
+        }
+        
+    }
+    void DoMoves()
+    {
+        //J<ai une liste d<action 
+        //Chaque Action contien un from et un to
+        //J<executes seulements les actions "Vertes", les actions que je peux faire ce tour ci bref
+        //Je me deplace de une thuile a la fois et lorsque ma liste est fini, je end mon tour
+        //Actions remaning?
+        if(StartMoves)
+        {
+            OverlayTiles.SetActive(false);
+            UnitViewMode();
+            Frac = 0;//timer du lerp
+            foreach (TileInfo ti in GameController.GM.mapinfo)
+            {
+                GameController.GM.VisualUpdate(ti);
+                ti.MyVisual.GetComponentInChildren<TextMesh>().text = "";
+            }
+            StartMoves = false;
+        }
+        if(Path.Count>0)
+        {
+            DoAction(Path[0]);
+            if (Frac >= 1)
+            {
+                Path.Remove(Path[0]);
+                Frac = 0;
+            }
+        }
+        else
+        {
+            OverlayTiles.SetActive(true);
+            MainViewMode();
+            DoingTurn = false;
+            GameController.TM.IsPlayerTurn = true;
+        }
+    }
+    public float Frac = 0;
+
+   
+    void DoAction(Action a)
+    {
+        
+        if(a.isAttack==false)
+        {
+            Frac += Time.deltaTime / 2;
+            Vector3 Start = new Vector3(a.From.Coox, 0, a.From.Cooy);
+            Vector3 end = new Vector3(a.To.Coox, 0, a.To.Cooy);
+            this.transform.position = Vector3.Lerp(Start, end, Frac);
+            this.transform.rotation = Quaternion.Lerp(this.transform.rotation,Quaternion.Euler(new Vector3(0, 90 * a.Direction, 0)), Frac);
+            this.MyTile = GameController.GM.mapTItoGO[a.To];
+            this.coox = a.To.Coox;
+            this.cooy = a.To.Cooy;
+        }
+        
+    }
+    
 }
+
+
