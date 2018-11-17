@@ -71,7 +71,7 @@ namespace Procedural.Carre
             CooH = h;
         }
     }
-    public class MapGenerator : MonoBehaviour
+    public class MapGenerator
     {
         
         public int MapWidth;
@@ -115,7 +115,7 @@ namespace Procedural.Carre
         {
             foreach (TileInfo ti in mapinfo)
             {
-                Destroy(mapTItoGO[ti]);
+                GameObject.Destroy(mapTItoGO[ti]);
 
             }
             mapinfo.Clear();
@@ -126,7 +126,7 @@ namespace Procedural.Carre
             foreach (TileInfo ti in mapinfo)
             {
                 SavedMap.Add(ti);
-                Destroy(mapTItoGO[ti]);
+                GameObject.Destroy(mapTItoGO[ti]);
 
             }
             mapinfo.Clear();
@@ -141,7 +141,7 @@ namespace Procedural.Carre
                 for (int y = 0; y < Longeur; y++)
                 {
                     TileInfo TI = new TileInfo(x, y);//Tile info
-                    GameObject TIGO = Instantiate(TilePrefab, new Vector3(x, 0, y), Quaternion.identity);//Tile PRefab
+                    GameObject TIGO = GameObject.Instantiate(TilePrefab, new Vector3(x, 0, y), Quaternion.identity,MapHolder);//Tile PRefab
                     Mapping(TIGO, TI,x,y);//Mapping des deux dans mes dictionaires
                     TI.MyVisual = TIGO;
                     PreVisualUpdates();
@@ -160,7 +160,7 @@ namespace Procedural.Carre
                 for (int y = 0; y < Longeur; y++)
                 {
                     TileInfo TI = new TileInfo(x, y);//Tile info
-                    GameObject TIGO = Instantiate(TilePrefab, new Vector3(x, Random.Range(MinHauteur,MaxHauteur), y), Quaternion.identity);//Tile PRefab
+                    GameObject TIGO = GameObject.Instantiate(TilePrefab, new Vector3(x, Random.Range(MinHauteur,MaxHauteur), y), Quaternion.identity, MapHolder);//Tile PRefab
                     Mapping(TIGO, TI,x,y);//Mapping des deux dans mes dictionaires
                     TI.MyVisual = TIGO;
                     PreVisualUpdates();
@@ -181,7 +181,7 @@ namespace Procedural.Carre
                 {
                     Color P = Map2D1.GetPixel(x, y);
                     TileInfo TI = new TileInfo(x, y, P);//Tile info
-                    GameObject TIGO = Instantiate(TilePrefab, new Vector3(x, 0, y), Quaternion.identity, MapHolder);//Tile PRefab
+                    GameObject TIGO = GameObject.Instantiate(TilePrefab, new Vector3(x, 0, y), Quaternion.identity, MapHolder);//Tile PRefab
                     Mapping(TIGO, TI, x, y);//Mapping des deux dans mes dictionaires
                     TI.MyVisual = TIGO;
                     PreVisualUpdates();
@@ -453,7 +453,7 @@ namespace Procedural.Hex
             return new Vector3(Horiz * (Coox + Cooy / 2f), 0f, Vert * Cooy);
         }
     }
-    public class MapGenerator : MonoBehaviour
+    public class MapGenerator
     {
         public int MapWidth;
         public int MapHeight;
@@ -489,7 +489,7 @@ namespace Procedural.Hex
                 for (int y = 0; y < Longeur; y++)
                 {
                     TileInfo TI = new TileInfo(x, y);//Tile info
-                    GameObject TIGO = Instantiate(TilePrefab, TI.Position(), Quaternion.identity);//Tile PRefab
+                    GameObject TIGO = GameObject.Instantiate(TilePrefab, TI.Position(), Quaternion.identity, MapHolder);//Tile PRefab
                     Mapping(TIGO, TI,x,y);//Mapping des deux dans mes dictionaires
                     TI.MyVisual = TIGO;
 
@@ -509,7 +509,7 @@ namespace Procedural.Hex
                 for (int y = 0; y < Longeur; y++)
                 {
                     TileInfo TI = new TileInfo(x, y);//Tile info
-                    GameObject TIGO = Instantiate(TilePrefab, new Vector3(0, Random.Range(MinHauteur, MaxHauteur), 0)+ TI.Position(), Quaternion.identity);//Tile PRefab
+                    GameObject TIGO = GameObject.Instantiate(TilePrefab, new Vector3(0, Random.Range(MinHauteur, MaxHauteur), 0)+ TI.Position(), Quaternion.identity, MapHolder);//Tile PRefab
                     Mapping(TIGO, TI,x,y);//Mapping des deux dans mes dictionaires
                     TI.MyVisual = TIGO;
                     PreVisualUpdates();
@@ -530,7 +530,7 @@ namespace Procedural.Hex
                 {
                     Color P = Map2D1.GetPixel(x, y);
                     TileInfo TI = new TileInfo(x, y, P);//Tile info
-                    GameObject TIGO = Instantiate(TilePrefab, TI.Position(), Quaternion.identity, MapHolder);//Tile PRefab
+                    GameObject TIGO = GameObject.Instantiate(TilePrefab, TI.Position(), Quaternion.identity, MapHolder);//Tile PRefab
                     Mapping(TIGO, TI, x, y);//Mapping des deux dans mes dictionaires
                     TI.MyVisual = TIGO;
                     PreVisualUpdates();

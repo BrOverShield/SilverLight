@@ -52,16 +52,23 @@ namespace IA.PathFinding.mapCarre
         public bool b1;
         public bool b2;
         public bool b3;
+        public int Direction;
         public Action(Procedural.Carre.TileInfo from, Procedural.Carre.TileInfo to)
         {
             From = from;
             To = to;
         }
+        public Action(Procedural.Carre.TileInfo from, Procedural.Carre.TileInfo to,int direction)
+        {
+            From = from;
+            To = to;
+            Direction = direction;
+        }
     }
     
          
 
-    public class Pathfinding:MonoBehaviour
+    public class Pathfinding
     {
         public bool AllowDiagonal=false;
         
@@ -104,13 +111,13 @@ namespace IA.PathFinding.mapCarre
         {
             List<Action> myActions=new List<Action>();
 
-            Action up = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy + 1));//up
+            Action up = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy + 1),0);//up
             myActions.Add(up);
-            Action down = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy - 1));//down
+            Action down = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy - 1),2);//down
             myActions.Add(down);
-            Action left = new Action(s.mytile, GM.FindTile(s.mytile.Coox-1, s.mytile.Cooy));//left
+            Action left = new Action(s.mytile, GM.FindTile(s.mytile.Coox-1, s.mytile.Cooy),3);//left
             myActions.Add(left);
-            Action right = new Action(s.mytile, GM.FindTile(s.mytile.Coox+1, s.mytile.Cooy));//right
+            Action right = new Action(s.mytile, GM.FindTile(s.mytile.Coox+1, s.mytile.Cooy),1);//right
             myActions.Add(right);
             if(AllowDiagonal)
             {
@@ -309,7 +316,7 @@ namespace IA.PathFinding.mapCarre
                 T++;
                 if(T>=TimeOut)
                 {
-                    print("TimeOut" + T);
+                    Debug.Log("TimeOut" + T);
                     goto timeisout;
                 }
                 mynode = frontier[0];
@@ -366,7 +373,7 @@ namespace IA.PathFinding.mapCarre
                 T++;
                 if (T >= TimeOut)
                 {
-                    print("TimeOut" + T);
+                    Debug.Log("TimeOut" + T);
                     goto timeisout;
                 }
                 mynode = frontier[0];
@@ -421,7 +428,7 @@ namespace IA.PathFinding.mapCarre
                 T++;
                 if (T >= TimeOut)
                 {
-                    print("TimeOut" + T);
+                    Debug.Log("TimeOut" + T);
                     goto timeisout;
                 }
                 //myNode vas etre celle qui les le plus proche de mon goal en ligne droite

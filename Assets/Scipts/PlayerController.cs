@@ -15,37 +15,95 @@ public class PlayerController : MonoBehaviour
     public GameObject TileClicked;
     public GameObject LastTileClicked;
     public GameObject MyTile;
+    public GameObject OverlayTiles;
+    public Camera[] Cams;
+    
     public delegate void Onclick();
     public Onclick Clicked;
     Pathfinding PF;
-    int coox=0;
-    int cooy=0;
+    int coox=23;
+    int cooy=2;
     public bool DoingTurn = false;
     int clicCount=0;
     public Material[] DistanceColor = new Material[3];
     void Start ()
     {
-        MyTile = NewGenerator.GM.mapTItoGO[NewGenerator.GM.FindTile(coox,cooy)];
-        PF = new Pathfinding(NewGenerator.GM);
-        PF.Legal = IllegalesMoves;
-        Clicked = PathFinder;
-        Clicked += ClickCounter;
+        
+
     }
    
 	// Update is called once per frame
 	void Update ()
     {
 
-                 
+        if(MyTile==null)
+        {
+            
+            if(GameController.GM!=null)
+            {
+                MyTile = GameController.GM.mapTItoGO[GameController.GM.FindTile(coox, cooy)];
+                PF = new Pathfinding(GameController.GM);
+                PF.Legal = IllegalesMoves;
+                Clicked = PathFinder;
+                Clicked += ClickCounter;
+                
+            }
+            
+        }
         
-		if(DoingTurn)
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+            ShowHideOverLayTiles();
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            UnitViewMode();
+        }
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            MainViewMode();
+        }
+        if (DoingTurn)
         {
             DoMoves();
         }
 	}
-    void ClickCounter()
+    
+    void UnitViewMode()
     {
         
+        foreach (Camera c in Cams)
+        {
+            c.gameObject.SetActive(false);
+            
+        }
+        Cams[1].gameObject.SetActive(true);
+    }
+    void MainViewMode()
+    {
+        foreach (Camera c in Cams)
+        {
+            c.gameObject.SetActive(false);
+
+        }
+        Cams[0].gameObject.SetActive(true);
+    }
+    bool isActive = true;
+    bool OverlayClick = false;
+    public void ShowHideOverLayTiles()
+    {
+        isActive = !isActive;
+        OverlayTiles.SetActive(isActive);
+        clicCount = 0;
+        OverlayClick = true;
+    }
+    void ClickCounter()
+    {
+        if(OverlayClick)
+        {
+            OverlayClick = false;
+            return;
+        }
         if(LastTileClicked==null)
         {
             clicCount++;
@@ -108,35 +166,35 @@ public class PlayerController : MonoBehaviour
         //Quand on clic sur une thuile, on appel la fonction Astar et on allume les thuile
         //On indique le nombre de tours pour s<y rendre
         //seulement si cest le tour du joueur
-        if(NewGenerator.TM.IsPlayerTurn)
+        if(GameController.TM.IsPlayerTurn)
         {
             //Allume toutes les tiles sur le chemin
             Path.Clear();
             //List des Actions (from,to)
-            foreach (TileInfo ti in NewGenerator.GM.mapinfo)
+            foreach (TileInfo ti in GameController.GM.mapinfo)
             {
-                NewGenerator.GM.VisualUpdate(ti);
+                GameController.GM.VisualUpdate(ti);
                 ti.MyVisual.GetComponentInChildren<TextMesh>().text = "";
             }
             int Distance = 0;
-            foreach (Action a in PF.AStar(NewGenerator.GM.mapGOtoTI[MyTile], NewGenerator.GM.mapGOtoTI[TileClicked]))
+            foreach (Action a in PF.AStar(GameController.GM.mapGOtoTI[MyTile], GameController.GM.mapGOtoTI[TileClicked]))
             {
                 Distance++;
                 if(Distance<=5)
                 {
                     a.To.MyVisual.GetComponentInChildren<TextMesh>().text = "1";
-                    NewGenerator.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[0];
+                    GameController.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[0];
                     Path.Add(a);
                 }
                 else if(Distance <= 10)
                 {
                     a.To.MyVisual.GetComponentInChildren<TextMesh>().text = "2";
-                    NewGenerator.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[1];
+                    GameController.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[1];
                 }
                 else
                 {
                     a.To.MyVisual.GetComponentInChildren<TextMesh>().text = ((int)(Distance+0.5f/5)).ToString();
-                    NewGenerator.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[2];
+                    GameController.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[2];
                 }
                 
             }
@@ -148,11 +206,11 @@ public class PlayerController : MonoBehaviour
     bool StartMoves = false;
     public void OnClickTwice()//Appeler quand on clic deux fois
     {
-        if(NewGenerator.TM.IsPlayerTurn)
+        if(GameController.TM.IsPlayerTurn)
         {
  
             DoingTurn = true;//active le update
-            NewGenerator.TM.IsPlayerTurn = false;
+            GameController.TM.IsPlayerTurn = false;
             StartMoves = true;//s<execute une fois au debut de la fonction DoMoves
         }
         
@@ -166,10 +224,12 @@ public class PlayerController : MonoBehaviour
         //Actions remaning?
         if(StartMoves)
         {
+            OverlayTiles.SetActive(false);
+            UnitViewMode();
             Frac = 0;//timer du lerp
-            foreach (TileInfo ti in NewGenerator.GM.mapinfo)
+            foreach (TileInfo ti in GameController.GM.mapinfo)
             {
-                NewGenerator.GM.VisualUpdate(ti);
+                GameController.GM.VisualUpdate(ti);
                 ti.MyVisual.GetComponentInChildren<TextMesh>().text = "";
             }
             StartMoves = false;
@@ -185,8 +245,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            OverlayTiles.SetActive(true);
+            MainViewMode();
             DoingTurn = false;
-            NewGenerator.TM.IsPlayerTurn = true;
+            GameController.TM.IsPlayerTurn = true;
         }
     }
     public float Frac = 0;
@@ -194,13 +256,15 @@ public class PlayerController : MonoBehaviour
    
     void DoAction(Action a)
     {
+        
         if(a.isAttack==false)
         {
             Frac += Time.deltaTime / 2;
             Vector3 Start = new Vector3(a.From.Coox, 0, a.From.Cooy);
             Vector3 end = new Vector3(a.To.Coox, 0, a.To.Cooy);
             this.transform.position = Vector3.Lerp(Start, end, Frac);
-            this.MyTile = NewGenerator.GM.mapTItoGO[a.To];
+            this.transform.rotation = Quaternion.Lerp(this.transform.rotation,Quaternion.Euler(new Vector3(0, 90 * a.Direction, 0)), Frac);
+            this.MyTile = GameController.GM.mapTItoGO[a.To];
             this.coox = a.To.Coox;
             this.cooy = a.To.Cooy;
         }

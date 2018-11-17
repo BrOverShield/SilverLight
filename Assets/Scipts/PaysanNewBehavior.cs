@@ -5,7 +5,7 @@ using IA.PathFinding.mapCarre;
 
 public class PaysanNewBehavior : MonoBehaviour
 {
-    Pathfinding PF = new Pathfinding(NewGenerator.GM);
+    Pathfinding PF = new Pathfinding(GameController.GM);
 	// Use this for initialization
 	void Start ()
     {
