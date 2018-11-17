@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public Transform TileHolder;
     public static TurnManager TM;
     public Material[] mats;
+    
     // Use this for initialization
     void Start ()
     {
