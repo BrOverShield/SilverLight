@@ -5,6 +5,7 @@ using Procedural.Carre;
 using TurnManaging;
 public class GameController : MonoBehaviour
 {
+    public Texture2D map;
     public static MapGenerator GM;
     public GameObject TilePrefab;
     public Transform TileHolder;
@@ -15,7 +16,7 @@ public class GameController : MonoBehaviour
     {
         TM = new TurnManager();
         GM = new MapGenerator(TilePrefab, TileHolder);
-        GM.GenerateMap(50, 50);
+        GM.GenerateMap(map);
         GM.VisualUpdate = UpdateVisual;
     }
 	
@@ -26,7 +27,7 @@ public class GameController : MonoBehaviour
 	}
     public void UpdateVisual(TileInfo ti)
     {
-        //ti.MyVisual.GetComponentInChildren<TextMesh>().text = ti.R256.ToString();
+        ti.MyVisual.GetComponentInChildren<TextMesh>().text = ti.R256.ToString();
         ti.MyVisual.GetComponentInChildren<MeshRenderer>().material = mats[0];
         
     }

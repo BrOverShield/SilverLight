@@ -143,13 +143,11 @@ public class PlayerController : MonoBehaviour
         //return true si l<action est legal
         if (a != null && a.To != null)
         {
-            if (a.To.R256 == 80|| a.To.R256 == 120)
+            if(a.To.R256>250&&a.To.G256<10&&a.To.B<10)
             {
-                return true;
-            }
-            if (a.To.R256 > 60)
-            {
+                a.To.MyVisual.GetComponentInChildren<TextMesh>().text = "ILLEGAL";
                 return false;
+                
             }
             else
             {
@@ -175,6 +173,7 @@ public class PlayerController : MonoBehaviour
             {
                 GameController.GM.VisualUpdate(ti);
                 ti.MyVisual.GetComponentInChildren<TextMesh>().text = "";
+                
             }
             int Distance = 0;
             foreach (Action a in PF.AStar(GameController.GM.mapGOtoTI[MyTile], GameController.GM.mapGOtoTI[TileClicked]))
