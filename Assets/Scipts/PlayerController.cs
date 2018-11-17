@@ -17,11 +17,12 @@ public class PlayerController : MonoBehaviour
     public GameObject MyTile;
     public GameObject OverlayTiles;
     public Camera[] Cams;
-    
+    public GameObject[] Terrains;
+    int HeightView = 0;
     public delegate void Onclick();
     public Onclick Clicked;
     Pathfinding PF;
-    int coox=23;
+    int coox=30;
     int cooy=2;
     public bool DoingTurn = false;
     int clicCount=0;
@@ -61,7 +62,35 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            MainViewMode();
+            foreach (TileInfo ti in GameController.GM.mapinfo)
+            {
+                ti.MyVisual.GetComponentInChildren<TextMesh>().text = ti.R256.ToString()+" , "+ti.G256.ToString() + " , " + ti.G256.ToString();
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.PageUp))
+        {
+            HeightView++;
+            if(HeightView>2)
+            {
+                HeightView = 2;
+            }
+            
+                Terrains[HeightView].SetActive(true);
+            
+            
+        }
+        if (Input.GetKeyDown(KeyCode.PageDown))
+        {
+            if(HeightView!=0)
+            {
+                Terrains[HeightView].SetActive(false);
+            }
+            
+            HeightView--;
+            if (HeightView < 0)
+            {
+                HeightView = 0;
+            }
         }
         if (DoingTurn)
         {
@@ -143,13 +172,11 @@ public class PlayerController : MonoBehaviour
         //return true si l<action est legal
         if (a != null && a.To != null)
         {
-            if (a.To.R256 == 80|| a.To.R256 == 120)
+            if(a.To.R256>200&&a.To.G256<100&&a.To.B<100)
             {
-                return true;
-            }
-            if (a.To.R256 > 60)
-            {
+                
                 return false;
+                
             }
             else
             {
@@ -175,6 +202,7 @@ public class PlayerController : MonoBehaviour
             {
                 GameController.GM.VisualUpdate(ti);
                 ti.MyVisual.GetComponentInChildren<TextMesh>().text = "";
+                
             }
             int Distance = 0;
             foreach (Action a in PF.AStar(GameController.GM.mapGOtoTI[MyTile], GameController.GM.mapGOtoTI[TileClicked]))
@@ -193,10 +221,17 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    a.To.MyVisual.GetComponentInChildren<TextMesh>().text = ((int)(Distance+0.5f/5)).ToString();
+                    a.To.MyVisual.GetComponentInChildren<TextMesh>().text = ((int)((Distance+0.5f)/5)).ToString();
                     GameController.GM.mapTItoGO[a.To].GetComponentInChildren<MeshRenderer>().material = DistanceColor[2];
                 }
                 
+            }
+            if(Path.Count==1)
+            {
+                if(Path[0].To==Path[0].From)
+                {
+                    clicCount = 0;
+                }
             }
             
         }
