@@ -13,9 +13,9 @@ public class TileBehavior : MonoBehaviour
     private void OnMouseDown()
     {
 
-        print(GameController.GM.mapGOtoTI[this.gameObject].CooH);
-        print(this.transform.position);
-        Player.TileClicked = this.gameObject;
+       
+
+        Player.TileClicked = this.gameObject;//On dit au joueur qu<on a clicker sur cette thuile
         Player.ClickControl();
     }
     

@@ -42,7 +42,7 @@ namespace IA.PathFinding.mapCarre
             mytile = ti;
         }
     }
-    public class Action
+    public class Action// Action From tile, To tile
     {
         public bool isAttack = false;
         public bool isDiagonal = false;
@@ -71,7 +71,7 @@ namespace IA.PathFinding.mapCarre
     public class Pathfinding
     {
         public bool AllowDiagonal=false;
-        public bool AllowUpAndDown = false;
+        public bool AllowUpAndDown = false;//3D pathfinding
 
         List<Action> solution=new List<Action>();
         List<Node> frontier=new List<Node>();
@@ -580,7 +580,7 @@ namespace IA.PathFinding.mapHex
     public class Pathfinding : MonoBehaviour
     {
         public bool AllowDiagonal = false;
-
+        public bool AllowUpAndDown = false;//3D Pathfinding
         List<Action> solution = new List<Action>();
         List<Node> frontier = new List<Node>();
         List<Node> explored = new List<Node>();
@@ -636,7 +636,24 @@ namespace IA.PathFinding.mapHex
                 Action DownLeft = new Action(s.mytile, GM.FindTile(s.mytile.Coox - 1, s.mytile.Cooy - 1));//down left               
                 myActions.Add(DownLeft);
 
-                
+            if(AllowUpAndDown)
+            {
+                Action upUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy + 1));//up Left
+                myActions.Add(upUp);
+                Action downUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox, s.mytile.Cooy - 1));//down Right
+                myActions.Add(downUp);
+                Action leftUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox - 1, s.mytile.Cooy));//left
+                myActions.Add(leftUp);
+                Action rightUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox + 1, s.mytile.Cooy));//right
+                myActions.Add(rightUp);
+
+
+                Action upRightUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox + 1, s.mytile.Cooy + 1));//up right              
+                myActions.Add(upRightUp);
+
+                Action DownLeftUp = new Action(s.mytile, GM.FindTile(s.mytile.Coox - 1, s.mytile.Cooy - 1));//down left               
+                myActions.Add(DownLeftUp);
+            }
             
 
             List<Action> illigalsActions = new List<Action>();

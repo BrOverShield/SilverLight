@@ -14,8 +14,8 @@ namespace Procedural.Carre
     {
         public int Coox;
         public int Cooy;
-        public int CooH;
-        public float Height;
+        public int CooH=0;
+        public float Height=0f;
         public float R;
         public int R256;
         public float G;
@@ -430,7 +430,8 @@ namespace Procedural.Hex
         public int Coox;//q
         public int Cooy;//r
         public int Coos;//s
-        public int CooH;
+        public int CooH=0;
+        public float PosHeight = 0;
         public float Height;
         public float R;
         public int R256;
@@ -498,7 +499,7 @@ namespace Procedural.Hex
             float Vert = Height * 0.75f;//offset = 1.5
             float Horiz = Width;//=1.73
 
-            return new Vector3(Horiz * (Coox + Cooy / 2f), 0f, Vert * Cooy);
+            return new Vector3(Horiz * (Coox + Cooy / 2f),PosHeight , Vert * Cooy);
         }
     }
     public class MapGenerator
